@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de investigación</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <h1>Panel de investigación</h1>
+      <p>Registros ordenados por fecha reciente y agrupados por grupo de pertenencia.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="toolbar">
+      <div>
+        <label for="groupFilter">Grupo</label>
+        <select id="groupFilter">
+          <option value="todos">Todos los grupos</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="rangeFilter">Antigüedad</label>
+        <select id="rangeFilter">
+          <option value="0">Cualquier fecha</option>
+          <option value="7">Últimos 7 días</option>
+          <option value="15">Últimos 15 días</option>
+          <option value="30">Últimos 30 días</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="search">Buscar</label>
+        <input type="search" id="search" placeholder="Participante o estudio..." />
+      </div>
+
+      <div class="spacer"></div>
+      <div class="summary" id="summary"></div>
+    </div>
+
+    <div id="groupList"></div>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

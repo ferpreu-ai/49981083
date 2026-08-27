@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi equipo — Escala Humana</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--g900:#0E2F1A;--g700:#265935;--g600:#3A7A47;--g500:#5C9A65;--g400:#8AB785;--g200:#C5DDB9;--g100:#E3EFDD;--g50:#F2F7EE;--cream:#F7F3EC;--ink:#1A1A18;--ink2:#3A3A36;--ink3:#6A6A62;--line:#D8D2C2;--amber:#9A5A1B}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Manrope',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6}
+.topbar{background:var(--g900);padding:14px 32px;display:flex;align-items:center;gap:10px}
+.topbar span{font-family:'Fraunces',serif;font-weight:600;font-size:15px;color:var(--g200)}
+main{max-width:640px;margin:0 auto;padding:56px 32px 60px}
+h1{font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:var(--g900);letter-spacing:-.01em;margin-bottom:8px}
+.sub{font-size:14px;color:var(--ink3);margin-bottom:28px}
+.card{background:#fff;border:1px solid var(--line);border-radius:4px;padding:24px 26px;margin-bottom:20px}
+.clave-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.clave{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--g700);letter-spacing:.04em}
+.asientos{font-size:13px;color:var(--ink3)}
+.invite-row{display:flex;gap:8px;margin-bottom:10px}
+.invite-row input{flex:1;padding:10px 12px;border:1px solid var(--line);border-radius:3px;font-size:14px;font-family:'Manrope',sans-serif}
+#agregar{background:var(--g50);border:1px dashed var(--line);color:var(--g700);padding:9px 14px;border-radius:3px;font-size:13px;font-weight:600;cursor:pointer;margin-bottom:20px}
+#enviar{display:inline-flex;align-items:center;gap:8px;background:var(--g600);color:#fff;border:none;cursor:pointer;padding:13px 24px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;font-family:'Manrope',sans-serif}
+#enviar:disabled{opacity:.6;cursor:default}
+#estado{font-size:13px;color:var(--ink3);margin-top:14px}
+#error-carga{display:none;font-size:14px;color:#A23B22}
+.footer{background:var(--g900);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-top:20px}
+.footer span{font-size:11px;color:var(--g500);letter-spacing:.06em;text-transform:uppercase}
+.footer .tag{font-family:'Fraunces',serif;font-size:12px;color:var(--g400);font-style:italic}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
+    <circle cx="18" cy="18" r="15" stroke="rgba(197,221,185,0.5)" stroke-width="1"/>
+    <circle cx="18" cy="18" r="2.5" fill="#8AB785"/>
+    <line x1="18" y1="6" x2="18" y2="13" stroke="#8AB785" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="18" y1="23" x2="18" y2="30" stroke="rgba(138,183,133,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="6" y1="18" x2="13" y2="18" stroke="rgba(138,183,133,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="23" y1="18" x2="30" y2="18" stroke="rgba(138,183,133,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+    <polygon points="18,7 16,14 18,13 20,14" fill="#8AB785"/>
+  </svg>
+  <span>Escala Humana</span>
+</div>
+
+<main>
+  <h1 id="titulo">Tu equipo</h1>
+  <p class="sub">Invitá a los gerentes de tu empresa para que completen el diagnóstico.</p>
+  <p id="error-carga">No pudimos encontrar este equipo. Revisá el link que te mandamos por email.</p>
+
+  <div id="contenido" hidden>
+    <div class="card">
+      <div class="clave-row">
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px">Código de acceso del grupo</div>
+          <div class="clave" id="clave"></div>
+        </div>
+        <div class="asientos" id="asientos"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:14px">Invitar por email</div>
+      <div id="filas-invitar"></div>
+      <button type="button" id="agregar">+ Agregar otra persona</button>
+      <br>
+      <button type="button" id="enviar">Enviar invitaciones →</button>
+      <div id="estado"></div>
+    </div>
+  </div>
+</main>
+
+<div class="footer">
+  <span>Ferpreu Consultora · 2026</span>
+  <span class="tag">"La diferencia está en la gente."</span>
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const token = params.get('token');
+const filasEl = document.getElementById('filas-invitar');
+const contenidoEl = document.getElementById('contenido');
+const errorEl = document.getElementById('error-carga');
+const estadoEl = document.getElementById('estado');
+
+function agregarFila() {
+  const row = document.createElement('div');
+  row.className = 'invite-row';
+  row.innerHTML = '<input type="text" placeholder="Nombre" class="fila-nombre">' +
+                   '<input type="email" placeholder="email@empresa.com.ar" class="fila-email">';
+  filasEl.appendChild(row);
+}
+
+document.getElementById('agregar').addEventListener('click', agregarFila);
+
+async function cargar() {
+  if (!token) {
+    errorEl.style.display = 'block';
+    return;
+  }
+  try {
+    const resp = await fetch('/api/mi-equipo?token=' + encodeURIComponent(token));
+    if (!resp.ok) throw new Error();
+    const data = await resp.json();
+
+    document.getElementById('titulo').textContent = data.nombre || 'Tu equipo';
+    document.getElementById('clave').textContent = data.clave;
+    document.getElementById('asientos').textContent = 'Hasta ' + data.asientosMax + ' personas';
+    contenidoEl.hidden = false;
+    agregarFila();
+  } catch (err) {
+    errorEl.style.display = 'block';
+  }
+}
+
+document.getElementById('enviar').addEventListener('click', async () => {
+  const invitados = Array.from(document.querySelectorAll('.invite-row')).map((row) => ({
+    nombre: row.querySelector('.fila-nombre').value.trim(),
+    email: row.querySelector('.fila-email').value.trim(),
+  })).filter((i) => i.email);
+
+  if (invitados.length === 0) {
+    estadoEl.textContent = 'Agregá al menos un email.';
+    return;
+  }
+
+  const boton = document.getElementById('enviar');
+  boton.disabled = true;
+  estadoEl.textContent = 'Enviando…';
+
+  try {
+    const resp = await fetch('/api/invitar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, invitados }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'No se pudo enviar');
+    estadoEl.textContent = 'Listo — se enviaron ' + data.enviados + ' invitación(es).';
+  } catch (err) {
+    estadoEl.textContent = err.message;
+  } finally {
+    boton.disabled = false;
+  }
+});
+
+cargar();
+</script>
+
+</body>
+</html>

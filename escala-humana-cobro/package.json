@@ -1,0 +1,10 @@
+{
+  "name": "escala-humana-cobro",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Módulo de cobro self-service (Mercado Pago) para integrar al proyecto escala-humana-diagnostico.",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "mercadopago": "^2.0.15"
+  }
+}

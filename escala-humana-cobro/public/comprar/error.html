@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pago rechazado — Escala Humana</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--g900:#0E2F1A;--g700:#265935;--g500:#5C9A65;--g400:#8AB785;--g200:#C5DDB9;--amber:#9A5A1B;--redbg:#FBE7E4;--red:#A23B22;--cream:#F7F3EC;--ink:#1A1A18;--ink2:#3A3A36}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Manrope',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;display:flex;flex-direction:column}
+.topbar{background:var(--g900);padding:14px 32px;display:flex;align-items:center;gap:10px}
+.topbar span{font-family:'Fraunces',serif;font-weight:600;font-size:15px;color:var(--g200)}
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:60px 32px}
+.card{max-width:460px;text-align:center}
+.icon{width:56px;height:56px;border-radius:50%;background:var(--redbg);display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+h1{font-family:'Fraunces',serif;font-weight:700;font-size:28px;color:var(--g900);letter-spacing:-.01em;margin-bottom:14px}
+p{font-size:14.5px;color:var(--ink2);line-height:1.7;margin-bottom:32px}
+.acciones{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--amber);color:#fff;padding:13px 24px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;text-decoration:none}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--g700);border:1.5px solid var(--g700);padding:12px 22px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;text-decoration:none}
+.footer{background:var(--g900);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.footer span{font-size:11px;color:var(--g500);letter-spacing:.06em;text-transform:uppercase}
+.footer .tag{font-family:'Fraunces',serif;font-size:12px;color:var(--g400);font-style:italic}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
+    <circle cx="18" cy="18" r="15" stroke="rgba(197,221,185,0.5)" stroke-width="1"/>
+    <circle cx="18" cy="18" r="2.5" fill="#8AB785"/>
+    <line x1="18" y1="6" x2="18" y2="13" stroke="#8AB785" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="18" y1="23" x2="18" y2="30" stroke="rgba(138,183,133,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="6" y1="18" x2="13" y2="18" stroke="rgba(138,183,133,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="23" y1="18" x2="30" y2="18" stroke="rgba(138,183,133,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+    <polygon points="18,7 16,14 18,13 20,14" fill="#8AB785"/>
+  </svg>
+  <span>Escala Humana</span>
+</div>
+
+<main>
+  <div class="card">
+    <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#A23B22" stroke-width="2.2" stroke-linecap="round"/></svg></div>
+    <h1>El pago no se pudo procesar</h1>
+    <p>Mercado Pago rechazó el intento — puede ser un tema del banco o la tarjeta. Podés volver a intentarlo o escribirnos directo y lo resolvemos por WhatsApp.</p>
+    <div class="acciones">
+      <a class="btn-primary" href="/comprar">Intentar de nuevo →</a>
+      <a class="btn-secondary" href="https://wa.me/543416435736" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+    </div>
+  </div>
+</main>
+
+<div class="footer">
+  <span>Ferpreu Consultora · 2026</span>
+  <span class="tag">"La diferencia está en la gente."</span>
+</div>
+
+</body>
+</html>

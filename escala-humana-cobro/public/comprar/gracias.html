@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pago aprobado — Escala Humana</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--g900:#0E2F1A;--g500:#5C9A65;--g400:#8AB785;--g200:#C5DDB9;--g100:#E3EFDD;--cream:#F7F3EC;--ink:#1A1A18;--ink2:#3A3A36;--ink3:#6A6A62;--line:#D8D2C2;--g700:#265935}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Manrope',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;display:flex;flex-direction:column}
+.topbar{background:var(--g900);padding:14px 32px;display:flex;align-items:center;gap:10px}
+.topbar span{font-family:'Fraunces',serif;font-weight:600;font-size:15px;color:var(--g200)}
+main{flex:1;display:flex;align-items:center;justify-content:center;padding:60px 32px}
+.card{max-width:460px;text-align:center}
+.icon{width:56px;height:56px;border-radius:50%;background:var(--g100);display:flex;align-items:center;justify-content:center;margin:0 auto 24px}
+h1{font-family:'Fraunces',serif;font-weight:700;font-size:28px;color:var(--g900);letter-spacing:-.01em;margin-bottom:14px}
+p{font-size:14.5px;color:var(--ink2);line-height:1.7;margin-bottom:8px}
+.note{font-size:13px;color:var(--ink3);margin-bottom:32px}
+.upsell{border-top:1px dashed var(--line);padding-top:24px;font-size:13px;color:var(--ink2);font-style:italic;font-family:'Fraunces',serif}
+.footer{background:var(--g900);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.footer span{font-size:11px;color:var(--g500);letter-spacing:.06em;text-transform:uppercase}
+.footer .tag{font-family:'Fraunces',serif;font-size:12px;color:var(--g400);font-style:italic}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
+    <circle cx="18" cy="18" r="15" stroke="rgba(197,221,185,0.5)" stroke-width="1"/>
+    <circle cx="18" cy="18" r="2.5" fill="#8AB785"/>
+    <line x1="18" y1="6" x2="18" y2="13" stroke="#8AB785" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="18" y1="23" x2="18" y2="30" stroke="rgba(138,183,133,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="6" y1="18" x2="13" y2="18" stroke="rgba(138,183,133,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="23" y1="18" x2="30" y2="18" stroke="rgba(138,183,133,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+    <polygon points="18,7 16,14 18,13 20,14" fill="#8AB785"/>
+  </svg>
+  <span>Escala Humana</span>
+</div>
+
+<main>
+  <div class="card">
+    <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7" stroke="#265935" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <h1>Ya está — revisá tu email</h1>
+    <p>Te mandamos el acceso al email con el que compraste. Ahí vas a encontrar el link para hacer tu diagnóstico — o para invitar a tu equipo, si compraste el plan grupal.</p>
+    <p class="note">Si no llega en unos minutos, revisá spam o escribinos por WhatsApp.</p>
+    <div class="upsell">Si después de ver tu informe querés una devolución en vivo con nosotros, te la ofrecemos ahí mismo.</div>
+  </div>
+</main>
+
+<div class="footer">
+  <span>Ferpreu Consultora · 2026</span>
+  <span class="tag">"La diferencia está en la gente."</span>
+</div>
+
+</body>
+</html>

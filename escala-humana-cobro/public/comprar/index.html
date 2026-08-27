@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comprar el diagnóstico — Escala Humana</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g900:#0E2F1A;--g800:#1B4129;--g700:#265935;--g600:#3A7A47;
+  --g500:#5C9A65;--g400:#8AB785;--g200:#C5DDB9;--g100:#E3EFDD;--g50:#F2F7EE;
+  --cream:#F7F3EC;--ink:#1A1A18;--ink2:#3A3A36;--ink3:#6A6A62;--line:#D8D2C2;
+  --amber:#9A5A1B;--amberlight:#FEF0D8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Manrope',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6}
+.topbar{background:var(--g900);padding:14px 32px;display:flex;align-items:center;gap:10px}
+.topbar span{font-family:'Fraunces',serif;font-weight:600;font-size:15px;color:var(--g200)}
+main{max-width:780px;margin:0 auto;padding:56px 32px 40px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--g600);margin-bottom:16px}
+h1{font-family:'Fraunces',serif;font-size:38px;font-weight:700;color:var(--g900);line-height:1.12;letter-spacing:-.01em;margin-bottom:14px;max-width:9.5em}
+.lede{font-size:15px;color:var(--ink2);max-width:44em}
+.plans{max-width:780px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:640px){.plans{grid-template-columns:1fr}}
+.plan-card{cursor:pointer;position:relative;background:#fff;border:2px solid var(--line);border-radius:4px;padding:26px 26px 28px;display:flex;flex-direction:column;gap:16px;transition:border-color .15s,background .15s}
+.plan-card.selected{border-color:var(--g700);background:var(--g50)}
+.plan-name{font-family:'Fraunces',serif;font-weight:600;font-size:19px;color:var(--g900);margin-bottom:4px}
+.plan-price{font-weight:700;font-size:15px;color:var(--amber)}
+.plan-price small{font-weight:500;color:var(--ink3);font-size:12px}
+.plan-bullets{display:flex;flex-direction:column;gap:10px}
+.plan-bullets li{list-style:none;display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--ink2)}
+.plan-bullets svg{flex-shrink:0;margin-top:2px}
+.plan-cta{margin-top:auto;padding-top:6px;font-size:13px;font-weight:700;color:var(--g700)}
+.badge-rec{position:absolute;top:-11px;right:22px;background:var(--amber);color:var(--amberlight);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:20px}
+#form-compra{max-width:780px;margin:34px auto 0;padding:0 32px}
+#form-compra[hidden]{display:none}
+.form-card{background:#fff;border:1px solid var(--line);border-radius:4px;padding:28px 30px 30px}
+.form-eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
+.form-plan{font-family:'Fraunces',serif;font-weight:600;font-size:17px;color:var(--g900);margin-bottom:22px}
+.form-plan span{font-family:'Manrope',sans-serif;font-weight:600;font-size:13px;color:var(--amber)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:520px){.form-row{grid-template-columns:1fr}}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--ink2);margin-bottom:6px}
+.field input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:3px;font-size:14px;font-family:'Manrope',sans-serif;color:var(--ink)}
+.form-note{font-size:12px;color:var(--ink3);line-height:1.6;margin:4px 0 20px;padding-top:16px;border-top:1px dashed var(--line)}
+button[type=submit]{display:inline-flex;align-items:center;gap:8px;background:var(--g600);color:#fff;border:none;cursor:pointer;padding:14px 26px;border-radius:999px;font-size:13px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;font-family:'Manrope',sans-serif}
+button[type=submit]:disabled{opacity:.6;cursor:default}
+.footer{background:var(--g900);padding:16px 32px;display:flex;align-items:center;justify-content:space-between;margin-top:48px;flex-wrap:wrap;gap:6px}
+.footer span{font-size:11px;color:var(--g500);letter-spacing:.06em;text-transform:uppercase}
+.footer .tag{font-family:'Fraunces',serif;font-size:12px;color:var(--g400);font-style:italic}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <svg width="28" height="28" viewBox="0 0 36 36" fill="none">
+    <circle cx="18" cy="18" r="15" stroke="rgba(197,221,185,0.5)" stroke-width="1"/>
+    <circle cx="18" cy="18" r="2.5" fill="#8AB785"/>
+    <line x1="18" y1="6" x2="18" y2="13" stroke="#8AB785" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="18" y1="23" x2="18" y2="30" stroke="rgba(138,183,133,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="6" y1="18" x2="13" y2="18" stroke="rgba(138,183,133,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="23" y1="18" x2="30" y2="18" stroke="rgba(138,183,133,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+    <polygon points="18,7 16,14 18,13 20,14" fill="#8AB785"/>
+  </svg>
+  <span>Escala Humana</span>
+</div>
+
+<main>
+  <div class="eyebrow">Empezá hoy</div>
+  <h1>Elegí cómo hacer tu diagnóstico</h1>
+  <p class="lede">Diez minutos, veinticuatro indicadores, un mapa claro de dónde está tu equipo hoy.</p>
+</main>
+
+<div class="plans">
+  <div class="plan-card" data-plan="individual" data-nombre="Diagnóstico Individual" data-precio="USD 25 · pago único">
+    <div>
+      <div class="plan-name">Diagnóstico Individual</div>
+      <div class="plan-price">USD 25 <small>· pago único</small></div>
+    </div>
+    <ul class="plan-bullets">
+      <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#E3EFDD"/><path d="M5 8.2l2 2 4-4.4" stroke="#265935" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Un informe personal con tus 4 dimensiones y tu nivel de madurez</li>
+      <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#E3EFDD"/><path d="M5 8.2l2 2 4-4.4" stroke="#265935" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Acceso inmediato, sin esperar a nadie</li>
+      <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#E3EFDD"/><path d="M5 8.2l2 2 4-4.4" stroke="#265935" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Ideal para ver cómo funciona antes de sumar al equipo</li>
+    </ul>
+    <div class="plan-cta">Empezar mi diagnóstico →</div>
+  </div>
+
+  <div class="plan-card" data-plan="equipo" data-nombre="Diagnóstico de Equipo" data-precio="USD 150 · hasta 10 personas · pago único">
+    <div class="badge-rec">Recomendado</div>
+    <div>
+      <div class="plan-name">Diagnóstico de Equipo</div>
+      <div class="plan-price">USD 150 <small>· hasta 10 personas · pago único</small></div>
+    </div>
+    <ul class="plan-bullets">
+      <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#E3EFDD"/><path d="M5 8.2l2 2 4-4.4" stroke="#265935" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Un código de grupo para invitar a tu equipo gerencial</li>
+      <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#E3EFDD"/><path d="M5 8.2l2 2 4-4.4" stroke="#265935" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Informe comparativo grupal con el mapa de brechas por dimensión</li>
+      <li><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#E3EFDD"/><path d="M5 8.2l2 2 4-4.4" stroke="#265935" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Panel para ver quién completó e invitar al resto</li>
+      <li style="color:var(--ink3);font-size:12px"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#FEF0D8"/><path d="M5 8.2l2 2 4-4.4" stroke="#9A5A1B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>Asiento extra sobre 10: USD 12 c/u</li>
+    </ul>
+    <div class="plan-cta">Armar mi equipo →</div>
+  </div>
+</div>
+
+<form id="form-compra" hidden>
+  <div class="form-card">
+    <div class="form-eyebrow">Vas a comprar</div>
+    <div class="form-plan"><span id="plan-nombre"></span> — <span id="plan-precio" style="color:#9A5A1B"></span></div>
+
+    <div class="form-row">
+      <div class="field">
+        <label for="nombre">Nombre y apellido</label>
+        <input type="text" id="nombre" name="nombre" required placeholder="Fernanda López">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required placeholder="vos@tuempresa.com.ar">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="field">
+        <label for="empresa">Empresa</label>
+        <input type="text" id="empresa" name="empresa" placeholder="Estancia Los Álamos">
+      </div>
+      <div class="field" id="campo-equipo" hidden>
+        <label for="asientos">Personas en el equipo</label>
+        <input type="number" id="asientos" name="asientos" min="1" max="50" value="10">
+      </div>
+    </div>
+
+    <p class="form-note">Vas a pagar con Mercado Pago. No es una suscripción — se cobra una sola vez por este ciclo.</p>
+
+    <button type="submit">Continuar a pago →</button>
+  </div>
+</form>
+
+<div class="footer">
+  <span>Ferpreu Consultora · 2026</span>
+  <span class="tag">"La diferencia está en la gente."</span>
+</div>
+
+<script>
+const cards = document.querySelectorAll('.plan-card');
+const form = document.getElementById('form-compra');
+const campoEquipo = document.getElementById('campo-equipo');
+const planNombreEl = document.getElementById('plan-nombre');
+const planPrecioEl = document.getElementById('plan-precio');
+let planSeleccionado = null;
+
+cards.forEach((card) => {
+  card.addEventListener('click', () => {
+    planSeleccionado = card.dataset.plan;
+    cards.forEach((c) => c.classList.toggle('selected', c === card));
+    form.hidden = false;
+    campoEquipo.hidden = planSeleccionado !== 'equipo';
+    planNombreEl.textContent = card.dataset.nombre;
+    planPrecioEl.textContent = card.dataset.precio;
+    form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+});
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const boton = form.querySelector('button[type=submit]');
+  const textoOriginal = boton.textContent;
+  boton.disabled = true;
+  boton.textContent = 'Redirigiendo a Mercado Pago…';
+
+  const datos = {
+    plan: planSeleccionado,
+    nombre: document.getElementById('nombre').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    empresa: document.getElementById('empresa').value.trim(),
+    asientos: document.getElementById('asientos').value,
+  };
+
+  try {
+    const resp = await fetch('/api/crear-preferencia', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(datos),
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || 'No pudimos iniciar el pago');
+    window.location.href = data.init_point;
+  } catch (err) {
+    alert(err.message);
+    boton.disabled = false;
+    boton.textContent = textoOriginal;
+  }
+});
+</script>
+
+</body>
+</html>

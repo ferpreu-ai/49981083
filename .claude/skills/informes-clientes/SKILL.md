@@ -8,6 +8,7 @@ description: Redactar informes para clientes de Fernando, sobre todo informes de
 Siempre consulta `escala-humana` (datos del modelo, combinaciones críticas, cautelas). Tono: `voz-fernando-preumayr`, versión informe: cercano, práctico, sin jerga.
 
 ## Pasos
+0. Si Fernando pasa el PDF automático del diagnóstico web, ese informe ya trae el mapa, los 24 ítems, los cruces y la comparativa. No los repito. Escribo solo la devolución humana: la foto, los desbalances con escena del agro, hasta 3 acciones con responsable y plazo.
 1. Pedí los datos: nombre de la empresa, cantidad de personas, puntajes por dimensión (y por indicador si los hay), notas de entrevistas, y si es diagnóstico o re-medición (en ese caso, el informe anterior).
 2. Llamá a `escala-humana` y elegí qué combinaciones críticas aplican a **estos** puntajes. No fuerces una que no aparece.
 3. Armá el informe con esta estructura (base hasta que Fernando pase un informe modelo):
@@ -28,6 +29,9 @@ Siempre consulta `escala-humana` (datos del modelo, combinaciones críticas, cau
 - Sin "Se recomienda…". Usá "Conviene empezar por…" o "Lo primero que haríamos es…".
 - **Nunca se envía al cliente.** Fernando revisa y manda.
 - No pongas precios ni propuesta comercial en el informe.
+- Niveles: Reactivo menos de 3, Definido de 3 a menos de 3,5, Estratégico desde 3,5 (ver `escala-humana/modelo.md`). Si el informe web dice otra cosa, avisalo en una nota aparte para Fernando, no al cliente.
+- Cuando respondió una sola persona (por ejemplo, el accionista), marcá los ítems que parecen sobrevalorados y sugerí pedir ejemplos concretos antes de sacar conclusiones.
+- No copies mails, teléfonos ni datos de contacto del cliente.
 
 ## Ejemplos (datos inventados solo para ilustrar)
 

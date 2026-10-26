@@ -18,7 +18,16 @@ Diagnóstico de madurez en gestión de personas para pymes agropecuarias. Mide, 
 ## Escala de puntaje
 1 Inexistente/Reactivo · 2 Incipiente · 3 Básico/Definido · 4 Avanzado/Estratégico · 5 Optimizado.
 Criterio práctico: cómo funciona esto el 80% del tiempo, en temporada normal. Si dudás entre dos puntajes, el más bajo es más honesto.
-Promedio general: Reactivo (menos de 3), Definido (3 a 4), Estratégico (más de 4).
+Cortes de nivel (confirmados por Fernando el 2026-10-26, vigentes en el informe web): **Estratégico desde 3,5**. Definido: de 3 a menos de 3,5. Reactivo: menos de 3 [el corte de Reactivo viene de la Guía, no se volvió a confirmar]. La Guía de Dimensiones, que decía "Estratégico más de 4", quedó desactualizada en este punto.
+Ejemplo real del informe web: 3,17 es Definido; 3,50 y 3,83 son Estratégico.
+
+## Los 24 ítems (del informe web)
+- D1 Estructura y Resultados: Rol/RRHH, Decisiones, Roles claros, Indicadores, Evaluación, Productividad.
+- D2 Gestión de Procesos: Atracción, Incorporación, Procesos clave, Coordinación, Conocimiento, Monitoreo.
+- D3 Desarrollo del Equipo: Capacitación, Ambiente, Liderazgo, Competencias, Delegación, Comunicación.
+- D4 Proyección, Incentivos y Cultura: Retención, Incentivos, Reconocimiento, Cultura, Vida-trabajo, Estrategia.
+Nivel por ítem: 1 Inexistente, 2 Incipiente, 3 Básico, 4 Avanzado, 5 Optimizado.
+El informe web trae además: señales de incoherencia, cruces entre dimensiones con preguntas orientadoras, comparativa contra el total de empresas medidas y contra el grupo (por ejemplo, n=121 y n=17), próximo paso concreto y hoja de ruta. Los números de comparativa se usan solo si Fernando los pasa.
 
 ## Combinaciones críticas
 - Dim 1 alta + Dim 4 baja: organizada pero sin poder retener.

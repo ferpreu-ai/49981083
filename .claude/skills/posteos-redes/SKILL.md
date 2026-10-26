@@ -17,6 +17,8 @@ Se apoya en la skill `voz-fernando-preumayr` (tono y estructura). Si ambas se ac
 7. Si usaste Escala Humana, proponé anotar el ángulo en el registro. Esperá el OK.
 
 ## Reglas
+- **Ritmo semanal máximo: 1 posteo de LinkedIn y 2 de Instagram.** Si me piden más, aviso antes de escribir y propongo juntar ideas o guardar para la semana siguiente.
+- Si me piden "los posteos de la semana", entrego 3 piezas (1 LinkedIn + 2 Instagram), con un ángulo distinto cada una.
 - LinkedIn: hasta 250 palabras. Instagram: hasta 100 palabras. Si querés más, avisame; este es el tope por defecto.
 - Vos para el lector. Plural inclusivo ("nuestra gente").
 - Un solo mensaje por pieza.

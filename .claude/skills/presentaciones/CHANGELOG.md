@@ -8,3 +8,6 @@
 
 ## v1.1 (2026-10-25)
 - Descripción ajustada: esta skill son las diapositivas y el guion; el documento de una materia va en `propuestas-maestrias`.
+
+## v1.2 (2026-10-26)
+- Corrección de Fernando: presentaciones y talleres son ocasionales, no repetitivos. Se aclaró en la skill que es de uso liviano. Prioridad bajada a 1 en la tabla de tareas.

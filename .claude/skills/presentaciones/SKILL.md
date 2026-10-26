@@ -5,6 +5,8 @@ description: Armar las DIAPOSITIVAS y el guion de una sesión de Fernando (talle
 
 # Presentaciones y talleres
 
+Uso **ocasional**, no semanal. Por eso la skill es liviana: pide pocos datos, entrega el esqueleto y espera el OK antes de desarrollar.
+
 Tono y voz: skill `voz-fernando-preumayr`. Si la presentación incluye Escala Humana: skill `escala-humana`.
 
 ## Pasos

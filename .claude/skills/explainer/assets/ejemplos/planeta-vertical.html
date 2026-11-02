@@ -1,0 +1,1106 @@
+<!-- Ejemplo terminado: explainer vertical de 70 s, 8 escenas. Referencia de densidad y calidad. Usa un motor anterior (geom y una franja); para un explainer nuevo partí de assets/plantilla.html. -->
+<title>Reel del candidato de Pavel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,300..800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: cuadro vertical 9:16. Animación arriba, subtítulos abajo. Panel lateral en escritorio. */
+:root{
+  --night:#070A17;
+  --panel:#0C1124;
+  --panel-2:#131A36;
+  --line:#232C50;
+  --glass:rgba(9,13,30,.82);
+  --text:#F1F2FA;
+  --muted:#8F97BF;
+  --star:#FFA552;
+  --star-hot:#FFE2B8;
+  --star-limb:#D0602A;
+  --data:#A6D6FF;
+  --ok:#7EDDB3;
+  --warn:#FFC857;
+  --display:"Bricolage Grotesque","Avenir Next Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%;background:var(--night)}
+body{color:var(--text);font-family:var(--body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:var(--data);text-underline-offset:3px}
+
+.app{min-height:100%;display:flex;align-items:center;justify-content:center;gap:40px;padding-block:24px;padding-inline:16px}
+
+/* Cuadro vertical */
+.frame{position:relative;container-type:size;height:min(calc(100vh - 48px),880px);aspect-ratio:9/16;max-width:100%;border:1px solid var(--line);border-radius:28px;overflow:hidden;flex:none;
+  background:radial-gradient(130% 70% at 60% 20%,var(--panel-2),var(--night) 70%);
+  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.frame canvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1}
+
+.topbar{position:absolute;left:0;right:0;top:0;z-index:6;padding:2.6cqw 4cqw 0;display:flex;flex-direction:column;gap:2.6cqw;pointer-events:none}
+.bars{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:1.2cqw}
+.bars span{position:relative;display:block;height:3px;border-radius:2px;background:rgba(241,242,250,.22);overflow:hidden}
+.bars i{position:absolute;inset:0;transform-origin:left;transform:scaleX(var(--p,0));background:var(--text)}
+.toprow{display:flex;justify-content:flex-end}
+.info{pointer-events:auto;width:9cqw;height:9cqw;border-radius:50%;border:1px solid var(--line);background:var(--glass);color:var(--text);display:grid;place-items:center;cursor:pointer;padding:0;font:600 4cqw/1 var(--mono)}
+@media (min-width:980px){.info{display:none}}
+
+/* Subtítulos */
+.subs{position:absolute;left:9%;right:9%;top:65.5%;z-index:4;pointer-events:none;text-align:center;text-wrap:balance;
+  font-family:var(--display);font-weight:800;font-stretch:88%;font-size:7.6cqw;line-height:1.1;letter-spacing:-.01em;color:var(--text);
+  text-shadow:0 0 .14em var(--night),.06em .06em 0 var(--night),-.06em .06em 0 var(--night),.06em -.06em 0 var(--night),-.06em -.06em 0 var(--night),0 .08em 0 var(--night),0 -.08em 0 var(--night),.08em 0 0 var(--night),-.08em 0 0 var(--night)}
+/* Margen lateral: la palabra resaltada crece sin pisar el espacio de al lado */
+.subs .w{display:inline-block;margin-inline:.05em;transition:transform .12s ease,color .12s ease}
+.subs .w.now{color:var(--star);transform:scale(1.06)}
+.subs.pop{animation:pop .2s ease-out}
+.subs.full{font-size:5cqw}
+@keyframes pop{from{transform:scale(.94);opacity:.4}to{transform:none;opacity:1}}
+
+/* Zonas táctiles y estados */
+.taps{position:absolute;inset:0;z-index:5;cursor:pointer;touch-action:manipulation}
+.pz{position:absolute;left:50%;top:40%;z-index:5;width:17cqw;height:17cqw;transform:translate(-50%,-50%);border-radius:50%;background:var(--glass);border:1px solid var(--line);display:grid;place-items:center;pointer-events:none}
+.pz svg{width:7cqw;height:7cqw;fill:var(--text);margin-left:1cqw}
+.replay{position:absolute;left:50%;top:40%;z-index:7;transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:2cqw;padding:3cqw 5cqw;border-radius:99px;border:0;background:var(--star);color:var(--night);font:700 4cqw/1 var(--body);cursor:pointer}
+.frame.clean .topbar,.frame.clean .pz,.frame.clean .replay{display:none}
+.frame.bare .subs,.frame.bare .bars{visibility:hidden}
+/* Render cuadro por cuadro: sin animaciones CSS que dependan del reloj */
+.frame.frozen .subs,.frame.frozen .subs .w{animation:none!important;transition:none!important}
+.frame:focus-visible,.info:focus-visible,.replay:focus-visible{outline:2px solid var(--star);outline-offset:3px}
+
+/* Panel lateral */
+.aside{width:340px;max-height:min(calc(100vh - 48px),880px);overflow:auto;display:flex;flex-direction:column;gap:22px;padding-right:6px}
+.aside h1{margin:0;font-family:var(--display);font-weight:800;font-stretch:80%;font-size:30px;line-height:1;letter-spacing:-.01em;text-wrap:balance}
+.aside h2{margin:0 0 8px;font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--star)}
+.aside p{margin:0;color:var(--muted)}
+.aside ul{margin:0;padding-left:1.1em;color:var(--muted);display:flex;flex-direction:column;gap:5px}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.act{appearance:none;border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:99px;padding:9px 16px;font:700 14px/1 var(--body);cursor:pointer}
+.act.primary{background:var(--star);border-color:var(--star);color:var(--night)}
+.switch{appearance:none;display:inline-flex;align-items:center;gap:10px;align-self:flex-start;border:0;background:none;padding:2px 0;color:var(--text);font:700 14px/1 var(--body);cursor:pointer}
+.switch .knob{position:relative;flex:none;width:38px;height:22px;border-radius:99px;background:var(--panel-2);border:1px solid var(--line);transition:background .15s ease}
+.switch .knob::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--muted);transition:transform .15s ease,background .15s ease}
+.switch[aria-checked="true"] .knob{background:var(--star);border-color:var(--star)}
+.switch[aria-checked="true"] .knob::after{transform:translateX(16px);background:var(--night)}
+.act:focus-visible,.blk:focus-visible,.close:focus-visible,.switch:focus-visible{outline:2px solid var(--star);outline-offset:2px}
+.script{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.blk{appearance:none;width:100%;text-align:left;display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;padding:9px 10px;border:1px solid transparent;border-radius:10px;background:none;color:var(--muted);font:400 14px/1.45 var(--body);cursor:pointer}
+.blk .n{font-family:var(--mono);font-size:12px;padding-top:2px;color:var(--muted)}
+.blk:hover{border-color:var(--line)}
+.blk[aria-current="step"]{background:var(--panel-2);border-color:var(--line);color:var(--text)}
+.blk[aria-current="step"] .n{color:var(--star)}
+.sheet-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.close{display:none;appearance:none;border:1px solid var(--line);background:var(--panel-2);color:var(--text);border-radius:99px;padding:8px 14px;font:700 14px/1 var(--body);cursor:pointer}
+
+@media (max-width:979px){
+  .aside{position:fixed;inset:0;z-index:20;width:auto;max-height:none;padding-inline:20px;padding-block:calc(env(safe-area-inset-top,0px) + 20px) calc(env(safe-area-inset-bottom,0px) + 28px);background:var(--night);transform:translateY(102%);transition:transform .3s ease;visibility:hidden}
+  .aside.open{transform:none;visibility:visible}
+  .close{display:inline-block}
+}
+@media (max-width:699px){
+  .app{display:block;height:100%;min-height:0;padding:0}
+  .frame{width:100%;height:100%;aspect-ratio:auto;border:0;border-radius:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .subs.pop{animation:none}
+  .subs .w,.aside,.switch .knob,.switch .knob::after{transition:none}
+}
+</style>
+
+<div class="app">
+  <div class="frame" id="frame" tabindex="0" aria-label="Reel animado. Flechas: cambiar de escena. Espacio: pausa.">
+    <canvas id="cv" role="img" aria-label=""></canvas>
+    <div class="subs" id="subs" aria-live="off"></div>
+    <div class="taps" id="taps"></div>
+    <div class="pz" id="pz" hidden><svg viewBox="0 0 24 24"><path d="M7 4v16l13-8z"/></svg></div>
+    <button class="replay" id="replay" type="button" hidden>↻ Ver de nuevo</button>
+    <div class="topbar">
+      <div class="bars" id="bars"></div>
+      <div class="toprow">
+        <button class="info" id="info" type="button" aria-label="Abrir guion y opciones">i</button>
+      </div>
+    </div>
+  </div>
+
+  <aside class="aside" id="aside" aria-label="Guion y opciones">
+    <div class="sheet-head">
+      <h1>Reel del candidato de Pavel</h1>
+      <button class="close" id="close" type="button">Cerrar</button>
+    </div>
+    <p>Versión vertical para ver en el celular. Dura <span id="total">70</span> segundos.</p>
+    <div class="actions">
+      <button class="act" id="restart" type="button">Reiniciar</button>
+      <button class="act primary" id="rec" type="button">Modo grabación</button>
+    </div>
+    <p>Modo grabación oculta los controles y arranca de cero. Para salir, mantené apretada la pantalla o tocá H.</p>
+    <button class="switch" id="bareSw" type="button" role="switch" aria-checked="true"><span class="knob" aria-hidden="true"></span>Subtítulos y barras</button>
+    <p>El interruptor muestra u oculta los subtítulos y las barras de arriba. Funciona también en modo grabación. Atajo: S.</p>
+    <div>
+      <h2>Guion</h2>
+      <ol class="script" id="script"></ol>
+    </div>
+    <div>
+      <h2>Cómo se usa</h2>
+      <p>Tocá a la derecha para avanzar. Tocá a la izquierda para volver. Tocá al centro para pausar.</p>
+    </div>
+    <div>
+      <h2>Qué es ilustración</h2>
+      <ul>
+        <li>Las curvas de luz son simulaciones con los parámetros publicados.</li>
+        <li>Los nombres de los scripts son ilustrativos.</li>
+        <li>Las cifras vienen de Pavel. Nadie las reprodujo todavía.</li>
+        <li>El tiempo de los subtítulos es una estimación de lectura en voz alta.</li>
+      </ul>
+    </div>
+    <div>
+      <h2>Fuentes</h2>
+      <ul>
+        <li><a href="https://news.ycombinator.com/item?id=50002665" target="_blank" rel="noopener">Hacker News: discusión</a></li>
+        <li><a href="https://explainx.ai/blog/claude-code-planet-candidate-tic-4206066-tess-rabtsevich-2026" target="_blank" rel="noopener">ExplainX: resumen técnico</a></li>
+        <li><a href="https://mtslive.substack.com/p/108-a-new-golden-age-of-science" target="_blank" rel="noopener">MTS: newsletter del 8 de octubre</a></li>
+        <li><a href="https://simbad.cds.unistra.fr/simbad/sim-id?Ident=StKM+1-561" target="_blank" rel="noopener">SIMBAD: StKM 1-561</a></li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const rootCS = getComputedStyle(document.documentElement);
+  const tok = n => rootCS.getPropertyValue(n).trim();
+  const C = {
+    night: tok('--night'), panel: tok('--panel'), line: tok('--line'), text: tok('--text'), muted: tok('--muted'),
+    star: tok('--star'), hot: tok('--star-hot'), limb: tok('--star-limb'), data: tok('--data'), ok: tok('--ok'), warn: tok('--warn')
+  };
+  const MONO = tok('--mono'), DISPLAY = tok('--display');
+
+  // Guion: un bloque por escena
+  const SCRIPT = [
+    'Un posible planeta nuevo estuvo siete años escondido en datos de la NASA, hasta que un tipo llamado Pavel lo encontró con Claude Code.',
+    'El satélite TESS ya había fotografiado esa estrella en 2018, 2020 y 2025, y esos datos son públicos: los puede bajar cualquiera.',
+    'Cuando un planeta pasa delante de su estrella, el brillo baja. Acá baja una parte en dos mil: como apagar una lamparita en un estadio con dos mil.',
+    'Esa caída es más chica que el ruido de la medición, pero si apilás los 23 tránsitos, uno cada 3,18 días, el ruido se cancela y la caída aparece.',
+    'Según Pavel, Claude Code escribió más de mil scripts en dos semanas. Él decidió qué preguntar y qué contaba como prueba superada.',
+    'Después intentó romperlo: escondió un año de datos, revisó las estrellas vecinas y puso a Codex a auditar todo. Encontraron una afirmación exagerada, y la borró.',
+    'Ojo, todavía es un candidato. TESS vuelve a mirar esa estrella el 31 de octubre, y Pavel ya dejó escritas sus predicciones.',
+    'Durante siglos, encontrar un planeta exigía un telescopio. Ahora alcanza con saber qué preguntarle a los datos.'
+  ];
+
+  // Utilidades numéricas
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const seg = (t, a, b) => clamp((t - a) / (b - a));
+  const ease = x => 1 - Math.pow(1 - x, 3);
+  const easeIO = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const pop = (t, a, d = .35) => { const k = seg(t, a, a + d); return k <= 0 ? 0 : k >= 1 ? 1 : ease(k) * (1 + .18 * Math.sin(k * Math.PI)); };
+  const TAU = Math.PI * 2;
+  function rgba(hex, a) {
+    let h = hex.replace('#', '');
+    if (h.length === 3) h = h.split('').map(c => c + c).join('');
+    const n = parseInt(h, 16);
+    return `rgba(${n >> 16 & 255},${n >> 8 & 255},${n & 255},${a})`;
+  }
+  function rng(seed) {
+    return () => {
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  function gauss(r) {
+    let u = 0, v = 0;
+    while (!u) u = r();
+    while (!v) v = r();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(TAU * v);
+  }
+  function overlap(R, r, d) {
+    if (d >= R + r) return 0;
+    if (d <= R - r) return Math.PI * r * r;
+    const c1 = clamp((d * d + r * r - R * R) / (2 * d * r), -1, 1);
+    const c2 = clamp((d * d + R * R - r * r) / (2 * d * R), -1, 1);
+    const k = Math.max(0, (-d + r + R) * (d + r - R) * (d - r + R) * (d + r + R));
+    return r * r * Math.acos(c1) + R * R * Math.acos(c2) - .5 * Math.sqrt(k);
+  }
+
+  // Tiempo de subtítulos: estimación por letras habladas y pausas de puntuación
+  const SAY = { '2018': 'dos mil dieciocho', '2020': 'dos mil veinte', '2025': 'dos mil veinticinco', '23': 'veintitrés', '3,18': 'tres coma dieciocho', '31': 'treinta y uno' };
+  function timeline(text) {
+    const words = [];
+    let t = .25;
+    for (const raw of text.split(/\s+/).filter(Boolean)) {
+      const m = raw.match(/^(.*?)([.,:;!?]*)$/);
+      const spoken = SAY[m[1]] || m[1];
+      const letters = spoken.replace(/[^a-záéíóúñü]/gi, '').length;
+      const d = clamp(.1 + letters * .038, .16, 1);
+      words.push({ w: raw, s: t, e: t + d });
+      t += d + (/[.!?]/.test(m[2]) ? .38 : /[:;]/.test(m[2]) ? .24 : /,/.test(m[2]) ? .17 : .02);
+    }
+    const chunks = [];
+    let cur = [];
+    words.forEach((w, i) => {
+      cur.push(i);
+      const len = cur.map(j => words[j].w).join(' ').length;
+      if (cur.length >= 4 || len >= 20 || /[.,:;!?]$/.test(w.w)) { chunks.push(cur); cur = []; }
+    });
+    if (cur.length) chunks.push(cur);
+    return { words, chunks: chunks.map(ids => ({ ids, s: words[ids[0]].s })), dur: t + .45 };
+  }
+
+  // Lienzo
+  const frameEl = document.getElementById('frame');
+  const cv = document.getElementById('cv');
+  const ctx = cv.getContext('2d');
+  const subsEl = document.getElementById('subs');
+  let W = 1, H = 1;
+  function resize() {
+    const r = frameEl.getBoundingClientRect();
+    const dpr = Math.min(3, window.devicePixelRatio || 1);
+    W = Math.max(1, r.width); H = Math.max(1, r.height);
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  new ResizeObserver(resize).observe(frameEl);
+  resize();
+
+  // Caja de la animación: arriba de los subtítulos
+  const geom = () => { const y = H * .12, h = H * .5; return { y, h, cx: W / 2, cy: y + h / 2, m: Math.min(W * .88, h) }; };
+  const fs = () => clamp(W * .032, 11, 15);
+  function txt(s, x, y, o = {}) {
+    ctx.font = `${o.w || 400} ${o.size || fs()}px ${o.family || MONO}`;
+    ctx.fillStyle = o.color || C.muted;
+    ctx.textAlign = o.align || 'left';
+    ctx.textBaseline = 'alphabetic';
+    ctx.globalAlpha = o.a ?? 1;
+    ctx.fillText(s, x, y);
+    ctx.globalAlpha = 1;
+  }
+  function line(x0, y0, x1, y1) { ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); }
+  function rrect(x, y, w, h, r) { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, r); else ctx.rect(x, y, w, h); }
+
+  const SR = rng(7);
+  const STARS = Array.from({ length: 220 }, () => ({ x: SR(), y: SR(), r: .3 + Math.pow(SR(), 4) * 1.6, p: SR() * TAU, s: .4 + SR() * 1.6 }));
+  function sky(g, alpha = 1) {
+    ctx.fillStyle = C.text;
+    for (const s of STARS) {
+      const tw = reduce ? .75 : .55 + .45 * Math.sin(g * s.s + s.p);
+      ctx.globalAlpha = alpha * tw * (.22 + s.r * .4);
+      ctx.beginPath(); ctx.arc(s.x * W, s.y * H, s.r, 0, TAU); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  // Objetos del cielo
+  function star(x, y, R, glow = 1) {
+    const g1 = ctx.createRadialGradient(x, y, R * .6, x, y, R * 4);
+    g1.addColorStop(0, rgba(C.star, .3 * glow));
+    g1.addColorStop(1, rgba(C.star, 0));
+    ctx.fillStyle = g1;
+    ctx.beginPath(); ctx.arc(x, y, R * 4, 0, TAU); ctx.fill();
+    const g2 = ctx.createRadialGradient(x - R * .2, y - R * .2, R * .05, x, y, R);
+    g2.addColorStop(0, C.hot); g2.addColorStop(.62, C.star); g2.addColorStop(1, C.limb);
+    ctx.fillStyle = g2;
+    ctx.beginPath(); ctx.arc(x, y, R, 0, TAU); ctx.fill();
+  }
+  function planet(x, y, r, alpha, onDisk, color = C.data) {
+    if (alpha <= 0) return;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    if (onDisk) ctx.fillStyle = C.night;
+    else {
+      const g = ctx.createRadialGradient(x - r * .35, y - r * .35, r * .1, x, y, r);
+      g.addColorStop(0, C.text); g.addColorStop(1, color);
+      ctx.fillStyle = g;
+    }
+    ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill();
+    if (onDisk) { ctx.strokeStyle = rgba(C.data, .55); ctx.lineWidth = 1; ctx.stroke(); }
+    ctx.restore();
+  }
+  function orbit(cx, cy, rx, ry, a0, a1, alpha, dash) {
+    if (alpha <= 0) return;
+    ctx.save();
+    ctx.strokeStyle = rgba(C.data, alpha); ctx.lineWidth = 1;
+    if (dash) ctx.setLineDash(dash);
+    ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, 0, a0, a1); ctx.stroke();
+    ctx.restore();
+  }
+  // Orden de profundidad: mitad trasera, estrella, mitad delantera
+  function system(cx, cy, R, orbits) {
+    for (const o of orbits) orbit(cx, cy, o.rx, o.ry, Math.PI, TAU, o.alpha * .55, o.dash);
+    for (const o of orbits) if (Math.sin(o.a) < 0) planet(cx + o.rx * Math.cos(o.a), cy + o.ry * Math.sin(o.a), o.r, o.alpha, false, o.color);
+    star(cx, cy, R, 1);
+    for (const o of orbits) orbit(cx, cy, o.rx, o.ry, 0, Math.PI, o.alpha * .55, o.dash);
+    for (const o of orbits) if (Math.sin(o.a) >= 0) {
+      const x = cx + o.rx * Math.cos(o.a), y = cy + o.ry * Math.sin(o.a);
+      planet(x, y, o.r, o.alpha, Math.hypot(x - cx, y - cy) < R, o.color);
+    }
+  }
+  function ring(x, y, r, a, color = C.star) {
+    if (a <= 0) return;
+    ctx.save(); ctx.globalAlpha = a; ctx.strokeStyle = color; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.stroke(); ctx.restore();
+  }
+
+  // Íconos
+  function brackets(cx, cy, s, a) {
+    const l = s * .3;
+    ctx.strokeStyle = rgba(C.star, a); ctx.lineWidth = 1.8;
+    ctx.beginPath();
+    for (const [sx, sy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
+      const x = cx + sx * s, y = cy + sy * s;
+      ctx.moveTo(x, y - sy * l); ctx.lineTo(x, y); ctx.lineTo(x - sx * l, y);
+    }
+    ctx.stroke();
+  }
+  function satellite(x, y, s) {
+    ctx.save();
+    ctx.translate(x, y); ctx.rotate(-.3);
+    ctx.lineWidth = 1; ctx.strokeStyle = C.data;
+    ctx.fillStyle = rgba(C.data, .16);
+    ctx.fillRect(-s * 2.2, -s * .32, s * 1.4, s * .64); ctx.strokeRect(-s * 2.2, -s * .32, s * 1.4, s * .64);
+    ctx.fillRect(s * .8, -s * .32, s * 1.4, s * .64); ctx.strokeRect(s * .8, -s * .32, s * 1.4, s * .64);
+    ctx.fillStyle = C.panel;
+    ctx.fillRect(-s * .6, -s * .75, s * 1.2, s * 1.5); ctx.strokeRect(-s * .6, -s * .75, s * 1.2, s * 1.5);
+    ctx.fillStyle = C.data;
+    for (let i = 0; i < 4; i++) { ctx.beginPath(); ctx.arc(0, -s * .48 + i * s * .32, s * .11, 0, TAU); ctx.fill(); }
+    ctx.restore();
+  }
+  function termIcon(x, y, s) {
+    if (s <= 0) return;
+    ctx.save();
+    ctx.fillStyle = C.panel; ctx.strokeStyle = C.data; ctx.lineWidth = 1.5;
+    rrect(x - s, y - s * .72, s * 2, s * 1.44, s * .25); ctx.fill(); ctx.stroke();
+    ctx.strokeStyle = C.star; ctx.lineWidth = Math.max(2, s * .16); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath(); ctx.moveTo(x - s * .55, y - s * .3); ctx.lineTo(x - s * .15, y); ctx.lineTo(x - s * .55, y + s * .3); ctx.stroke();
+    line(x + s * .05, y + s * .32, x + s * .55, y + s * .32);
+    ctx.restore();
+  }
+  function laptop(x, y, s, a, glow) {
+    if (s <= 0 || a <= 0) return;
+    ctx.save(); ctx.globalAlpha = a;
+    ctx.strokeStyle = C.text; ctx.lineWidth = 1.8; ctx.lineJoin = 'round';
+    ctx.fillStyle = rgba(C.data, .08 + .3 * glow);
+    rrect(x - s, y - s * .68, s * 2, s * 1.25, s * .1); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x - s * 1.3, y + s * .62); ctx.lineTo(x + s * 1.3, y + s * .62); ctx.lineTo(x + s * 1.15, y + s * .8); ctx.lineTo(x - s * 1.15, y + s * .8); ctx.closePath(); ctx.stroke();
+    ctx.strokeStyle = C.data; ctx.lineWidth = Math.max(2, s * .12); ctx.lineCap = 'round';
+    const ay = y - s * .08;
+    line(x, ay - s * .36, x, ay + s * .2);
+    ctx.beginPath(); ctx.moveTo(x - s * .24, ay - s * .02); ctx.lineTo(x, ay + s * .22); ctx.lineTo(x + s * .24, ay - s * .02); ctx.stroke();
+    line(x - s * .38, ay + s * .4, x + s * .38, ay + s * .4);
+    ctx.restore();
+  }
+  function checkBadge(x, y, r, a) {
+    if (r <= 0 || a <= 0) return;
+    ctx.save(); ctx.globalAlpha = a;
+    ctx.fillStyle = C.ok; ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill();
+    ctx.strokeStyle = C.night; ctx.lineWidth = Math.max(2, r * .22); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.beginPath(); ctx.moveTo(x - r * .42, y + r * .02); ctx.lineTo(x - r * .1, y + r * .34); ctx.lineTo(x + r * .45, y - r * .3); ctx.stroke();
+    ctx.restore();
+  }
+  function cross(x, y, s, color, a) {
+    if (a <= 0) return;
+    ctx.save(); ctx.globalAlpha = a; ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.lineCap = 'round';
+    line(x - s, y - s, x + s, y + s); line(x - s, y + s, x + s, y - s);
+    ctx.restore();
+  }
+  function eyeOff(x, y, s, a) {
+    if (a <= 0) return;
+    ctx.save(); ctx.globalAlpha = a; ctx.strokeStyle = C.text; ctx.lineWidth = 2; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x - s, y); ctx.quadraticCurveTo(x, y - s * .9, x + s, y); ctx.quadraticCurveTo(x, y + s * .9, x - s, y); ctx.stroke();
+    ctx.beginPath(); ctx.arc(x, y, s * .28, 0, TAU); ctx.stroke();
+    ctx.strokeStyle = C.star; ctx.lineWidth = 2.5; line(x - s * .8, y + s * .6, x + s * .8, y - s * .6);
+    ctx.restore();
+  }
+  function magnifier(x, y, r, a) {
+    if (a <= 0) return;
+    ctx.save(); ctx.globalAlpha = a;
+    ctx.strokeStyle = C.text; ctx.lineWidth = Math.max(2, r * .18); ctx.lineCap = 'round';
+    ctx.fillStyle = rgba(C.data, .14);
+    ctx.beginPath(); ctx.arc(x, y, r, 0, TAU); ctx.fill(); ctx.stroke();
+    line(x + r * .72, y + r * .72, x + r * 1.55, y + r * 1.55);
+    ctx.restore();
+  }
+  function padlock(x, y, s, closed) {
+    if (s <= 0) return;
+    ctx.save();
+    const lift = (1 - closed) * s * .45;
+    ctx.strokeStyle = C.star; ctx.lineWidth = Math.max(2.5, s * .17); ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x - s * .42, y - lift); ctx.lineTo(x - s * .42, y - s * .35 - lift);
+    ctx.arc(x, y - s * .35 - lift, s * .42, Math.PI, 0); ctx.lineTo(x + s * .42, y - lift); ctx.stroke();
+    ctx.fillStyle = C.star; rrect(x - s * .7, y, s * 1.4, s * 1.05, s * .18); ctx.fill();
+    ctx.fillStyle = C.night; ctx.beginPath(); ctx.arc(x, y + s * .45, s * .14, 0, TAU); ctx.fill();
+    ctx.fillRect(x - s * .05, y + s * .5, s * .1, s * .25);
+    ctx.restore();
+  }
+  function calendar(x, y, s) {
+    if (s <= 0) return;
+    ctx.save();
+    ctx.fillStyle = C.panel; ctx.strokeStyle = C.text; ctx.lineWidth = 1.5;
+    rrect(x - s, y - s, s * 2, s * 2, s * .22); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = C.star; rrect(x - s, y - s, s * 2, s * .6, [s * .22, s * .22, 0, 0]); ctx.fill();
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = C.night; ctx.font = `700 ${s * .38}px ${MONO}`; ctx.fillText('OCT', x, y - s * .69);
+    ctx.fillStyle = C.text; ctx.font = `800 ${s * 1.05}px ${DISPLAY}`; ctx.fillText('31', x, y + s * .36);
+    ctx.restore();
+  }
+  function person(x, y, s, color) {
+    ctx.save(); ctx.fillStyle = color;
+    ctx.beginPath(); ctx.arc(x, y - s * .45, s * .32, 0, TAU); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(x, y + s * .42, s * .58, s * .45, 0, Math.PI, TAU); ctx.fill();
+    ctx.restore();
+  }
+  function bubble(x, y, s, glyph, fill) {
+    if (s <= 0) return;
+    ctx.save(); ctx.fillStyle = fill;
+    rrect(x - s, y - s * .75, s * 2, s * 1.5, s * .45); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(x - s * .55, y + s * .6); ctx.lineTo(x - s * .95, y + s * 1.15); ctx.lineTo(x - s * .1, y + s * .6); ctx.fill();
+    ctx.fillStyle = C.night; ctx.font = `800 ${s * 1.2}px ${DISPLAY}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(glyph, x, y + s * .06);
+    ctx.restore();
+  }
+  function telescope(x, y, s, a) {
+    if (a <= 0) return;
+    ctx.save(); ctx.globalAlpha = a; ctx.translate(x, y);
+    ctx.strokeStyle = C.muted; ctx.lineWidth = Math.max(2, s * .035); ctx.lineCap = 'round';
+    line(0, 0, -s * .42, s * .75); line(0, 0, s * .42, s * .75); line(0, 0, 0, s * .8);
+    ctx.rotate(-.62);
+    ctx.fillStyle = C.panel; ctx.strokeStyle = C.text; ctx.lineWidth = Math.max(2, s * .028);
+    rrect(-s * .55, -s * .1, s * 1.2, s * .2, s * .04); ctx.fill(); ctx.stroke();
+    rrect(s * .62, -s * .13, s * .16, s * .26, s * .03); ctx.fill(); ctx.stroke();
+    rrect(-s * .7, -s * .05, s * .15, s * .1, s * .02); ctx.fill(); ctx.stroke();
+    rrect(-s * .1, -s * .21, s * .4, s * .07, s * .02); ctx.stroke();
+    ctx.fillStyle = rgba(C.data, .5); ctx.beginPath(); ctx.ellipse(s * .78, 0, s * .025, s * .11, 0, 0, TAU); ctx.fill();
+    ctx.restore();
+    ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = C.text; ctx.beginPath(); ctx.arc(x, y, s * .05, 0, TAU); ctx.fill(); ctx.restore();
+  }
+
+  // Escenas 4 y 6: datos simulados con P = 3,18 d y caída de 500 ppm
+  const P = 3.18, DUR = .085, WIN = .35, NB = 28;
+  const S4 = (() => {
+    const r = rng(2026), len = 27, g0 = 13, g1 = 14.4, target = [8, 7, 8];
+    const sectors = [], pts = [];
+    for (let s = 0; s < 3; s++) {
+      let off = 1, tcs = [];
+      for (let o = .1; o < P; o += .05) {
+        const list = [];
+        for (let tc = o; tc < len; tc += P) if (tc > .2 && tc < len - .2 && !(tc > g0 - .1 && tc < g1 + .1)) list.push(tc);
+        if (list.length === target[s]) { off = o; tcs = list; break; }
+      }
+      sectors.push({ off, tcs });
+      for (let i = 0; i < 1300; i++) {
+        let tt = r() * len;
+        while (tt > g0 && tt < g1) tt = r() * len;
+        let ph = ((tt - off) % P + P) % P;
+        if (ph > P / 2) ph -= P;
+        let f = gauss(r) * .7;
+        const a = Math.abs(ph);
+        if (a < DUR / 2) f -= .5;
+        else if (a < DUR / 2 + .012) f -= .5 * (1 - (a - DUR / 2) / .012);
+        pts.push({ s, tt, ph, f, in: Math.abs(ph) < WIN, k: r() });
+      }
+    }
+    const bw = 2 * WIN / NB, sum = new Array(NB).fill(0), cnt = new Array(NB).fill(0);
+    for (const p of pts) if (p.in) { const b = Math.min(NB - 1, Math.floor((p.ph + WIN) / bw)); sum[b] += p.f; cnt[b]++; }
+    const bins = sum.map((v, i) => ({ ph: -WIN + (i + .5) * bw, f: cnt[i] ? v / cnt[i] : 0 }));
+    const transits = sectors.flatMap((sc, s) => sc.tcs.map(tt => ({ s, tt })));
+    return { pts, bins, transits };
+  })();
+
+  // Escena 3: estadio de 2.000 lamparitas en anillos elípticos
+  const STAD = (() => {
+    const K = 22, rs = Array.from({ length: K }, (_, k) => lerp(.42, 1, k / (K - 1)));
+    const sum = rs.reduce((a, b) => a + b, 0);
+    const counts = rs.map(r => Math.round(2000 * r / sum));
+    counts[K - 1] += 2000 - counts.reduce((a, b) => a + b, 0);
+    const pts = [];
+    rs.forEach((r, k) => {
+      for (let i = 0; i < counts[k]; i++) {
+        const a = (i + (k % 2) * .5) / counts[k] * TAU;
+        pts.push({ u: r * Math.cos(a), v: r * Math.sin(a), p: ((i * 7 + k * 13) % 100) / 100 * TAU });
+      }
+    });
+    let off = 0, best = 9;
+    pts.forEach((p, i) => { const d = Math.hypot(p.u - .8, p.v + .32); if (d < best) { best = d; off = i; } });
+    return { pts, off };
+  })();
+
+  // Escena 5: 1.025 scripts en una grilla de 25 × 41
+  const TILES = (() => {
+    const cols = 25, rows = 41, r = rng(55), sx = 1338, sy = 1552;
+    const first = [[11, 19], [12, 19], [11, 20], [12, 20], [11, 21], [12, 21]];
+    const names = ['descargar_datos.py', 'buscar_transitos.py', 'ajustar_caida.py', 'vecinas_gaia.py', 'falsos_positivos.py', 'graficos.py'];
+    const stems = ['fase', 'ruido', 'sector', 'vecinas', 'prueba', 'bls', 'ajuste', 'gaia', 'ventana', 'modelo', 'residuos', 'pixeles', 'catalogo', 'alerta', 'auditoria'];
+    const list = [];
+    for (let c = 0; c < cols; c++) for (let rr = 0; rr < rows; rr++) {
+      const wx = c * 112, wy = rr * 76, fi = first.findIndex(([a, b]) => a === c && b === rr);
+      list.push({
+        wx, wy, fi, ok: false, okT: 0, at: 0,
+        name: fi >= 0 ? names[fi] : `${stems[Math.floor(r() * stems.length)]}_${Math.floor(r() * 900) + 100}.py`,
+        d: Math.hypot(wx + 50 - sx, wy + 32 - sy),
+        w: [.5 + r() * .4, .3 + r() * .5, .4 + r() * .5, .25 + r() * .4]
+      });
+    }
+    list.forEach(o => { if (o.fi >= 0) o.at = .3 + o.fi * .5; });
+    const rest = list.filter(o => o.fi < 0).sort((a, b) => a.d - b.d);
+    rest.forEach((o, i) => { o.at = 3.4 + i / rest.length * 3.4; });
+    const pool = rest.slice();
+    for (let j = 0; j < 70; j++) { const o = pool.splice(Math.floor(r() * pool.length), 1)[0]; o.ok = true; o.okT = 8.6 + j * .035; }
+    return { list, sx, sy, gw: cols * 112 - 12, gh: rows * 76 - 12 };
+  })();
+
+  // Escena 8: trazos de estrellas alrededor del polo
+  const TRAILS = Array.from({ length: 70 }, (_, i) => { const r = rng(300 + i); return { rr: .12 + r() * .9, a0: (.08 + r() * .7) * Math.PI, w: .6 + r() * .8 }; });
+
+  // D: duración de diseño de cada animación. Se estira o comprime a la duración del texto.
+  const SCENES = [
+    {
+      D: 9, alt: 'Una mira recorre el cielo y se detiene en una estrella naranja. Aparece un planeta que la orbita.',
+      draw(t, g, B) {
+        sky(g);
+        const m = B.m;
+        const toS = p => ({ x: p.x * W, y: B.y + p.y * B.h });
+        const T = { x: .6, y: .5 }, A = { x: .22, y: .3 }, Bs = { x: .78, y: .2 }, Cs = { x: .28, y: .74 };
+        const others = [A, Bs, Cs, { x: .84, y: .72 }, { x: .12, y: .55 }, { x: .45, y: .16 }];
+        const Ts = toS(T);
+        const Z = lerp(1, 3.2, easeIO(seg(t, 6.3, 7.5)));
+        const zoom = p => { const s = toS(p); return { x: Ts.x + (s.x - Ts.x) * Z, y: Ts.y + (s.y - Ts.y) * Z }; };
+        const oa = 1 - seg(t, 6.3, 7.2);
+        if (oa > 0) others.forEach((p, i) => {
+          const s = zoom(p), r = m * .012 * (1 + .25 * Math.sin(g * 1.3 + i));
+          const gr = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, r * 4);
+          gr.addColorStop(0, rgba(C.text, .9 * oa)); gr.addColorStop(1, rgba(C.text, 0));
+          ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(s.x, s.y, r * 4, 0, TAU); ctx.fill();
+        });
+        const R = m * .022 * Z, pa = ease(seg(t, 7.3, 8));
+        system(Ts.x, Ts.y, R, [{ rx: R * 3.7, ry: R * .6, a: -Math.PI / 2 + (t - 7.3) * .9, r: Math.max(2.5, R * .18), alpha: pa, color: C.data }]);
+        if (t > 7.3) { const k = seg(t, 7.3, 8.5); ring(Ts.x, Ts.y, R * (1.5 + k * 4), (1 - k) * .8); }
+        const WP = [[0, { x: .5, y: .5 }], [.6, A], [1.6, A], [2.2, Cs], [3.2, Cs], [3.8, Bs], [4.8, Bs], [5.5, T]];
+        let rp = Ts;
+        for (let i = 0; i < WP.length - 1; i++) {
+          const [t0, p0] = WP[i], [t1, p1] = WP[i + 1];
+          if (t >= t0 && t <= t1) { const k = easeIO(seg(t, t0, t1)), s0 = toS(p0), s1 = toS(p1); rp = { x: lerp(s0.x, s1.x, k), y: lerp(s0.y, s1.y, k) }; break; }
+        }
+        const lock = ease(seg(t, 5.5, 6.1));
+        const rs = lock < 1 ? lerp(m * .08, m * .055, lock) : Math.max(m * .055, R * 2.4);
+        brackets(rp.x, rp.y, rs, lerp(.55, 1, lock));
+        termIcon(B.cx, B.y + B.h * .92, m * .055 * pop(t, 7.8));
+      }
+    },
+    {
+      D: 9, alt: 'El satélite TESS fotografía la estrella tres veces. Los datos bajan a varias computadoras.',
+      draw(t, g, B) {
+        sky(g, .6);
+        const f = fs(), m = B.m;
+        const sx = W * .2, sy = B.y + B.h * .13, tx = W * .8, ty = sy, R = m * .04, su = m * .05;
+        const flashes = [2.9, 3.9, 4.9];
+        let beam = t > .8 ? .12 : 0;
+        for (const p of flashes) if (t >= p) beam = Math.max(beam, .12 + .5 * Math.exp(-(t - p) * 2));
+        if (beam > 0) {
+          ctx.fillStyle = rgba(C.data, beam * .5);
+          ctx.beginPath(); ctx.moveTo(sx + su * .6, sy); ctx.lineTo(tx, ty - R * 2.2); ctx.lineTo(tx, ty + R * 2.2); ctx.closePath(); ctx.fill();
+        }
+        star(tx, ty, R, .8);
+        satellite(sx, sy, su);
+        const ly = B.y + B.h * .47, x0 = W * .12, x1 = W * .88, Y0 = 2018.2, Y1 = 2026.6;
+        const X = v => x0 + (v - Y0) / (Y1 - Y0) * (x1 - x0);
+        const axA = ease(seg(t, 1.2, 2.2));
+        ctx.strokeStyle = rgba(C.muted, .6); ctx.lineWidth = 1.5;
+        if (axA > 0) line(x0, ly, lerp(x0, x1, axA), ly);
+        const yrs = [[2018.95, '2018'], [2020.9, '2020'], [2025.87, '2025']];
+        yrs.forEach(([v, lab], i) => {
+          const t0 = flashes[i], x = X(v), k = seg(t, t0, t0 + .5);
+          if (k > 0 && k < 1) { const e = ease(k); ctx.fillStyle = C.data; ctx.fillRect(lerp(sx, x, e) - 3, lerp(sy, ly, e) - 3, 6, 6); }
+          const d = pop(t, t0 + .45);
+          if (d > 0) {
+            ctx.fillStyle = C.star; ctx.beginPath(); ctx.arc(x, ly, 5 * d, 0, TAU); ctx.fill();
+            txt(lab, x, ly + f + 8, { align: 'center', size: f * .9, a: Math.min(1, d) });
+          }
+          const rk = seg(t, t0 + .45, t0 + 1.3);
+          if (rk > 0 && rk < 1) ring(x, ly, 5 + rk * 16, 1 - rk);
+        });
+        const lx = B.cx, lyL = B.y + B.h * .8, ls = m * .1;
+        const devices = [[lx, lyL, ls, 5.8], [lx - m * .34, lyL + ls * .15, ls * .7, 7.2], [lx + m * .34, lyL + ls * .15, ls * .7, 7.2]];
+        devices.forEach(([dx, dy, ds, start]) => {
+          const da = pop(t, start);
+          if (da <= 0) return;
+          ctx.fillStyle = C.data;
+          for (let j = 0; j < 6; j++) {
+            const src = X(yrs[j % 3][0]), t0 = start + .1 + j * .22, k = seg(t, t0, t0 + .7);
+            if (k <= 0 || k >= 1) continue;
+            const e = easeIO(k);
+            ctx.fillRect(lerp(src, dx, e) - 2.5, lerp(ly, dy - ds * .2, e) - Math.sin(e * Math.PI) * m * .04 - 2.5, 5, 5);
+          }
+          const gl = seg(t, start + .6, start + 1.6);
+          laptop(dx, dy, ds * da, Math.min(1, da), gl * (.6 + .4 * Math.sin(g * 4)));
+        });
+      }
+    },
+    {
+      D: 10, alt: 'Un planeta cruza frente a la estrella y la curva de brillo baja. Después, un estadio de 2.000 luces apaga una sola.',
+      draw(t, g, B) {
+        sky(g, .35);
+        const m = B.m;
+        const aA = 1 - seg(t, 4.6, 5.2);
+        if (aA > 0) {
+          ctx.save(); ctx.globalAlpha = aA;
+          const cx = B.cx, cy = B.y + B.h * .3, Rs = Math.min(W * .2, B.h * .18), rp = Rs * .13, b = Rs * .2, span = 1.75 * Rs;
+          const p = seg(t, .3, 4.3), px = cx + lerp(-span, span, p), py = cy + b;
+          star(cx, cy, Rs, .45);
+          planet(px, py, rp, 1, Math.hypot(px - cx, py - cy) < Rs + rp);
+          const x0 = W * .12, x1 = W * .88, base = B.y + B.h * .66, dmax = B.h * .14;
+          const fl = q => overlap(Rs, rp, Math.hypot(lerp(-span, span, q), b)) / (Math.PI * rp * rp);
+          const Xq = q => lerp(x0, x1, q), Yq = q => base + fl(q) * dmax;
+          ctx.strokeStyle = rgba(C.muted, .35); ctx.lineWidth = 1; ctx.setLineDash([3, 4]); line(x0, base, x1, base); ctx.setLineDash([]);
+          ctx.strokeStyle = C.star; ctx.lineWidth = 2.6; ctx.lineJoin = 'round';
+          ctx.beginPath();
+          const n = Math.max(2, Math.round(160 * p));
+          for (let i = 0; i <= n; i++) { const q = p * i / n; i ? ctx.lineTo(Xq(q), Yq(q)) : ctx.moveTo(Xq(q), Yq(q)); }
+          ctx.stroke();
+          ctx.fillStyle = C.hot; ctx.beginPath(); ctx.arc(Xq(p), Yq(p), 3.5, 0, TAU); ctx.fill();
+          ctx.restore();
+        }
+        const aB = ease(seg(t, 4.9, 5.7));
+        if (aB > 0) {
+          const cx = B.cx, cy = B.y + B.h * .48, rx = Math.min(W * .45, B.h * .6), ry = rx * .68;
+          ctx.save(); ctx.globalAlpha = aB;
+          ctx.fillStyle = rgba(C.ok, .1); ctx.strokeStyle = rgba(C.ok, .4); ctx.lineWidth = 1;
+          rrect(cx - rx * .3, cy - ry * .24, rx * .6, ry * .48, 4); ctx.fill(); ctx.stroke();
+          line(cx, cy - ry * .24, cx, cy + ry * .24);
+          ctx.beginPath(); ctx.arc(cx, cy, ry * .09, 0, TAU); ctx.stroke();
+          const r0 = Math.max(1, rx * .0065);
+          ctx.fillStyle = C.hot;
+          STAD.pts.forEach((p, i) => {
+            if (i === STAD.off) return;
+            ctx.globalAlpha = aB * (reduce ? .85 : .7 + .3 * Math.sin(g * 2 + p.p));
+            ctx.fillRect(cx + p.u * rx - r0, cy + p.v * ry - r0, r0 * 2, r0 * 2);
+          });
+          const op = STAD.pts[STAD.off], ox = cx + op.u * rx, oy = cy + op.v * ry, offK = seg(t, 7.2, 7.45);
+          ctx.globalAlpha = aB;
+          ctx.fillStyle = C.line; ctx.beginPath(); ctx.arc(ox, oy, r0 * 1.4, 0, TAU); ctx.fill();
+          ctx.globalAlpha = aB * (1 - offK);
+          ctx.fillStyle = C.hot; ctx.beginPath(); ctx.arc(ox, oy, r0 * 1.4, 0, TAU); ctx.fill();
+          ctx.restore();
+          if (t > 7.2) ring(ox, oy, lerp(m * .12, m * .035, ease(seg(t, 7.2, 8.6))), aB);
+        }
+      }
+    },
+    {
+      D: 14, alt: 'Miles de mediciones con ruido. Al apilar 23 tránsitos aparece la caída de brillo.',
+      draw(t, g, B) {
+        sky(g, .35);
+        const x0 = W * .07, x1 = W * .93, gw = W * .03, sw = (x1 - x0 - 2 * gw) / 3;
+        const pT = B.y + B.h * .12, pB = B.y + B.h * .88, yc = (pT + pB) / 2;
+        const Xt = (s, tt) => x0 + s * (sw + gw) + tt / 27 * sw;
+        const Xf = ph => x0 + (ph + WIN) / (2 * WIN) * (x1 - x0);
+        const FK = ease(seg(t, 5.8, 9.2)), A0 = B.h * .07, A1 = B.h * .12;
+        ctx.fillStyle = rgba(C.line, .3 * (1 - FK));
+        for (let s = 0; s < 3; s++) ctx.fillRect(Xt(s, 0), pT, sw, pB - pT);
+        ctx.fillStyle = rgba(C.line, .3 * FK);
+        ctx.fillRect(x0, pT, x1 - x0, pB - pT);
+        if (t > 11.2) {
+          ctx.fillStyle = rgba(C.star, .14 * ease(seg(t, 11.2, 11.8)));
+          ctx.fillRect(Xf(-DUR / 2 - .01), pT, Xf(DUR / 2 + .01) - Xf(-DUR / 2 - .01), pB - pT);
+        }
+        const TR = S4.transits, nM = Math.floor(clamp((t - 2.6) / .12, 0, TR.length));
+        ctx.strokeStyle = rgba(C.star, .6 * (1 - FK)); ctx.lineWidth = 1;
+        for (let i = 0; i < nM; i++) { const x = Xt(TR[i].s, TR[i].tt); line(x, pT, x, pB); }
+        const rv = x0 + (x1 - x0) * ease(seg(t, 0, 2.4));
+        ctx.fillStyle = C.data;
+        for (const p of S4.pts) {
+          const xt = Xt(p.s, p.tt);
+          if (t < 5.8 && xt > rv) continue;
+          const k = easeIO(clamp((t - 5.8 - p.k * .9) / 2.3));
+          let x, y, a;
+          if (p.in) { x = lerp(xt, Xf(p.ph), k); y = yc - p.f * lerp(A0, A1, k); a = .7; }
+          else { a = .7 * (1 - k); if (a < .02) continue; x = xt; y = yc - p.f * A0; }
+          ctx.globalAlpha = a;
+          ctx.fillRect(x - .8, y - .8, 1.6, 1.6);
+        }
+        ctx.globalAlpha = 1;
+        if (t > 9.3) {
+          const q = seg(t, 9.3, 11.2);
+          ctx.save();
+          ctx.strokeStyle = rgba(C.muted, .55); ctx.setLineDash([3, 4]); line(x0, yc, x1, yc); ctx.setLineDash([]);
+          ctx.strokeStyle = C.star; ctx.lineWidth = 3; ctx.lineJoin = 'round';
+          ctx.beginPath();
+          const nb = Math.max(1, Math.floor(q * NB));
+          for (let i = 0; i < nb; i++) { const b = S4.bins[i], x = Xf(b.ph), y = yc - b.f * A1; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+    },
+    {
+      D: 12, alt: 'Aparecen unos pocos scripts. La cámara se aleja y muestra más de mil. Pavel elige cuáles aprueban.',
+      draw(t, g, B) {
+        sky(g, .3);
+        const m = B.m, T = TILES;
+        const s0 = Math.min(W * .92 / 212, B.h * .92 / 216), s1 = Math.min(W * .94 / T.gw, B.h * .94 / T.gh);
+        const k = easeIO(seg(t, 3.4, 7.2));
+        const s = Math.exp(lerp(Math.log(s0), Math.log(s1), k));
+        const cxw = lerp(T.sx, T.gw / 2, k), cyw = lerp(T.sy, T.gh / 2, k);
+        const dim = ease(seg(t, 7.4, 8));
+        ctx.save();
+        ctx.beginPath(); ctx.rect(0, B.y, W, B.h); ctx.clip();
+        for (const o of T.list) {
+          const age = t - o.at;
+          if (age < 0) continue;
+          const x = B.cx + (o.wx - cxw) * s, y = B.cy + (o.wy - cyw) * s, w = 100 * s, h = 64 * s;
+          if (x > W || x + w < 0 || y > B.y + B.h || y + h < B.y) continue;
+          const okk = o.ok ? seg(t, o.okT, o.okT + .2) : 0;
+          const edge = clamp((y + h / 2 - B.y) / 24) * clamp((B.y + B.h - (y + h / 2)) / 24);
+          ctx.globalAlpha = Math.min(1, age / .3) * (1 - .72 * dim * (1 - okk)) * edge;
+          if (w < 26) { ctx.fillStyle = okk > 0 ? C.ok : rgba(C.data, .55); ctx.fillRect(x, y, w, h); continue; }
+          ctx.fillStyle = C.panel; ctx.strokeStyle = okk > 0 ? C.ok : C.line; ctx.lineWidth = 1;
+          rrect(x, y, w, h, w * .06); ctx.fill(); ctx.stroke();
+          if (w >= 60) {
+            ctx.font = `600 ${clamp(w * .078, 5, 13)}px ${MONO}`; ctx.fillStyle = C.data; ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
+            ctx.fillText(o.name.slice(0, Math.floor(age * 34)), x + w * .08, y + h * .27);
+          }
+          ctx.fillStyle = rgba(C.muted, .55);
+          o.w.forEach((ww, i) => { const gk = clamp((age - .35 - i * .12) / .25); if (gk > 0) ctx.fillRect(x + w * .08, y + h * (.42 + i * .14), w * .84 * ww * gk, Math.max(1, h * .055)); });
+        }
+        ctx.restore();
+        ctx.globalAlpha = 1;
+        const pa = pop(t, 7.4);
+        if (pa > 0) {
+          const ps = m * .085 * pa;
+          ctx.save();
+          ctx.fillStyle = rgba(C.night, .92); ctx.beginPath(); ctx.arc(B.cx, B.cy, ps * 1.25, 0, TAU); ctx.fill();
+          ctx.strokeStyle = C.star; ctx.lineWidth = 2; ctx.stroke();
+          ctx.restore();
+          person(B.cx, B.cy + ps * .08, ps, C.star);
+          const okB = t >= 9.6;
+          bubble(B.cx + ps * 1.35, B.cy - ps * 1.25, ps * .5 * pop(t, 7.9), okB ? '✓' : '?', okB ? C.ok : C.text);
+        }
+      }
+    },
+    {
+      D: 12, alt: 'Tres pruebas: tapar un año de datos y predecirlo, descartar estrellas vecinas y auditar un documento hasta borrar una línea exagerada.',
+      draw(t, g, B) {
+        sky(g, .3);
+        const m = B.m, badgeY = B.y + B.h * .84, br = m * .06;
+        const a1 = 1 - seg(t, 3.8, 4.2), a2 = seg(t, 4.0, 4.4) * (1 - seg(t, 6.2, 6.6)), a3 = seg(t, 6.4, 6.8);
+        // Prueba 1: tapar un año de datos y predecir dónde caen los tránsitos
+        if (a1 > 0) {
+          ctx.save(); ctx.globalAlpha = a1;
+          const x0 = W * .07, x1 = W * .93, gw = W * .03, sw = (x1 - x0 - 2 * gw) / 3, yc = B.y + B.h * .42, A = B.h * .045, hh = B.h * .17;
+          const Xt = (s, tt) => x0 + s * (sw + gw) + tt / 27 * sw;
+          ctx.fillStyle = rgba(C.line, .35);
+          for (let s = 0; s < 3; s++) ctx.fillRect(Xt(s, 0), yc - hh, sw, hh * 2);
+          ctx.fillStyle = C.data; ctx.globalAlpha = a1 * .6;
+          for (const p of S4.pts) ctx.fillRect(Xt(p.s, p.tt) - .7, yc - p.f * A - .7, 1.4, 1.4);
+          ctx.globalAlpha = a1; ctx.strokeStyle = rgba(C.star, .85); ctx.lineWidth = 1.4;
+          for (const tr of S4.transits) { const x = Xt(tr.s, tr.tt); line(x, yc - hh, x, yc + hh); }
+          const cin = ease(seg(t, .6, 1)), cout = ease(seg(t, 2.6, 3.1)), ch = hh * 2 * cin * (1 - cout), cx0 = Xt(2, 0) - 3;
+          if (ch > 0) {
+            ctx.fillStyle = C.panel; ctx.strokeStyle = C.line; ctx.lineWidth = 1;
+            ctx.fillRect(cx0, yc - hh, sw + 6, ch); ctx.strokeRect(cx0, yc - hh, sw + 6, ch);
+            if (cin >= 1) eyeOff(cx0 + sw / 2 + 3, yc, m * .06, a1 * clamp(1 - cout * 3));
+          }
+          const gk = seg(t, 1.8, 2.4);
+          if (gk > 0) {
+            ctx.setLineDash([3, 4]); ctx.strokeStyle = C.text; ctx.lineWidth = 1.5;
+            S4.transits.filter(tr => tr.s === 2).forEach((tr, i) => {
+              const ka = clamp(gk * 8 - i);
+              if (ka <= 0) return;
+              ctx.globalAlpha = a1 * ka;
+              const x = Xt(2, tr.tt); line(x, yc - hh - 8, x, yc + hh + 8);
+            });
+            ctx.setLineDash([]);
+          }
+          ctx.restore();
+          checkBadge(W / 2, badgeY, br * pop(t, 3.2), a1);
+        }
+        // Prueba 2: la señal sale del píxel de la estrella, no de las vecinas
+        if (a2 > 0) {
+          ctx.save(); ctx.globalAlpha = a2;
+          const n = 5, p = Math.min(W * .15, B.h * .15), gx = B.cx - p * n / 2, gy = B.y + B.h * .42 - p * n / 2;
+          ctx.strokeStyle = rgba(C.muted, .35); ctx.lineWidth = 1;
+          for (let i = 0; i <= n; i++) { line(gx + i * p, gy, gx + i * p, gy + n * p); line(gx, gy + i * p, gx + n * p, gy + i * p); }
+          ctx.fillStyle = rgba(C.star, .22 + .12 * Math.sin(g * 3)); ctx.fillRect(gx + 2 * p, gy + 2 * p, p, p);
+          star(gx + 2.5 * p, gy + 2.5 * p, p * .16, .8);
+          [[.35, 1.45, .09], [3.6, .4, .07], [4.4, 3.3, .08], [1.25, 4.35, .06]].forEach(([u, v, r], i) => {
+            const x = gx + u * p, y = gy + v * p, t0 = 4.5 + i * .38, k = seg(t, t0, t0 + .35);
+            ctx.globalAlpha = a2 * (1 - .65 * k); ctx.fillStyle = C.text;
+            ctx.beginPath(); ctx.arc(x, y, p * r, 0, TAU); ctx.fill();
+            if (t > t0 - .3 && t < t0 + .4) ring(x, y, lerp(p * .7, p * .3, seg(t, t0 - .3, t0 + .1)), a2 * (1 - seg(t, t0 + .1, t0 + .4)));
+            cross(x, y, p * .16, C.muted, a2 * k);
+          });
+          ctx.restore();
+          checkBadge(W / 2, badgeY, br * pop(t, 5.9), a2);
+        }
+        // Prueba 3: auditoría que encuentra y borra una línea exagerada
+        if (a3 > 0) {
+          ctx.save(); ctx.globalAlpha = a3;
+          const pw = m * .5, ph = m * .62, px = B.cx - pw / 2, py = B.y + B.h * .4 - ph / 2, fold = pw * .16;
+          ctx.fillStyle = C.panel; ctx.strokeStyle = C.text; ctx.lineWidth = 1.5; ctx.lineJoin = 'round';
+          ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(px + pw - fold, py); ctx.lineTo(px + pw, py + fold); ctx.lineTo(px + pw, py + ph); ctx.lineTo(px, py + ph); ctx.closePath(); ctx.fill(); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(px + pw - fold, py); ctx.lineTo(px + pw - fold, py + fold); ctx.lineTo(px + pw, py + fold); ctx.stroke();
+          const widths = [.62, .74, .55, .7, .66, .48, .58], gap = ph * .11, lh = Math.max(3, ph * .035), lx = px + pw * .14, ly0 = py + ph * .2;
+          const flag = 3, fk = seg(t, 8.4, 8.7), sk = seg(t, 9.6, 10), ck = easeIO(seg(t, 10.2, 10.8));
+          widths.forEach((w, i) => {
+            const y = ly0 + i * gap - (i > flag ? gap * ck : 0), ww = pw * .72 * w;
+            if (i !== flag) { ctx.fillStyle = rgba(C.muted, .7); ctx.fillRect(lx, y, ww, lh); return; }
+            if (ck >= 1) return;
+            ctx.globalAlpha = a3 * (1 - ck);
+            if (fk > 0) { ctx.fillStyle = rgba(C.warn, .22 * fk); ctx.fillRect(lx - 6, y - gap * .32, ww + 12, gap * .64 + lh); }
+            ctx.fillStyle = fk > 0 ? C.warn : rgba(C.muted, .7); ctx.fillRect(lx, y, ww, lh);
+            if (sk > 0) { ctx.strokeStyle = C.warn; ctx.lineWidth = 2.5; line(lx - 8, y + lh / 2, lx - 8 + (ww + 16) * sk, y + lh / 2); }
+            ctx.globalAlpha = a3;
+          });
+          const mk = easeIO(seg(t, 6.8, 8.4)), ma = seg(t, 6.6, 6.9) * (1 - seg(t, 9.9, 10.3));
+          if (ma > 0) magnifier(lx + pw * .5 * (.4 + .25 * Math.sin(t * 3)), lerp(ly0, ly0 + flag * gap, mk) + lh / 2, m * .075, a3 * ma);
+          ctx.restore();
+          checkBadge(W / 2, badgeY, br * pop(t, 11), a3);
+        }
+      }
+    },
+    {
+      D: 12, alt: 'Un planeta punteado orbita la estrella. TESS vuelve, aparece el 31 de octubre y una tarjeta de predicciones se cierra con candado.',
+      draw(t, g, B) {
+        sky(g, .6);
+        const m = B.m, cx = B.cx, cy = B.y + B.h * .38, R = m * .07, rx = R * 3.4, ry = R * .55;
+        const a = -Math.PI / 2 + t * .8, ppx = cx + rx * Math.cos(a), ppy = cy + ry * Math.sin(a), behind = Math.sin(a) < 0;
+        const ghost = () => {
+          ctx.save(); ctx.setLineDash([3, 3]); ctx.strokeStyle = C.data; ctx.lineWidth = 1.6;
+          ctx.globalAlpha = reduce ? .9 : .55 + .45 * Math.sin(g * 4);
+          ctx.beginPath(); ctx.arc(ppx, ppy, Math.max(4, R * .24), 0, TAU); ctx.stroke(); ctx.restore();
+        };
+        const sk = easeIO(seg(t, 2.9, 4.2)), su = m * .05, sx = lerp(-su * 3, W * .17, sk), sy = B.y + B.h * .1;
+        orbit(cx, cy, rx, ry, Math.PI, TAU, .4, [3, 5]);
+        if (behind) ghost();
+        if (sk > 0 && t > 4.3) {
+          const bp = reduce ? .3 : .15 + .35 * (.5 + .5 * Math.sin((t - 4.3) * 5));
+          ctx.fillStyle = rgba(C.data, bp * .5);
+          ctx.beginPath(); ctx.moveTo(sx + su * .6, sy); ctx.lineTo(cx, cy - R * 1.6); ctx.lineTo(cx, cy + R * 1.6); ctx.closePath(); ctx.fill();
+        }
+        star(cx, cy, R, .9);
+        orbit(cx, cy, rx, ry, 0, Math.PI, .4, [3, 5]);
+        if (!behind) ghost();
+        if (sk > 0) satellite(sx, sy, su);
+        calendar(W * .82, B.y + B.h * .11, m * .075 * pop(t, 5.4));
+        const cardA = ease(seg(t, 7.2, 7.7));
+        if (cardA > 0) {
+          const x0 = W * .12, x1 = W * .88, yC = B.y + B.h * .82, hC = B.h * .13, dayW = (x1 - x0 - 24) / 26;
+          ctx.save(); ctx.globalAlpha = cardA;
+          ctx.fillStyle = C.panel; ctx.strokeStyle = C.line; ctx.lineWidth = 1;
+          rrect(x0, yC - hC / 2, x1 - x0, hC, 8); ctx.fill(); ctx.stroke();
+          ctx.strokeStyle = rgba(C.muted, .6); line(x0 + 12, yC, x1 - 12, yC);
+          ctx.strokeStyle = C.star; ctx.lineWidth = 3; ctx.lineCap = 'round';
+          for (let k = 0; k < 9; k++) {
+            const kk = seg(t, 7.6 + k * .17, 7.8 + k * .17);
+            if (kk <= 0) continue;
+            const x = x0 + 12 + (.4 + k * 3.18) * dayW;
+            line(x, yC - hC * .3 * kk, x, yC + hC * .3 * kk);
+          }
+          ctx.restore();
+          padlock(x1 - m * .02, yC - hC * .5 - m * .02, m * .065 * pop(t, 9.8), ease(seg(t, 10.2, 10.6)));
+        }
+      }
+    },
+    {
+      D: 10, alt: 'Un telescopio bajo el cielo que gira. Después, una caja de pregunta apunta a una estrella y aparece su planeta.',
+      draw(t, g, B) {
+        sky(g, .5);
+        const m = B.m;
+        const ta = ease(seg(t, 0, 1)) * (1 - ease(seg(t, 4.4, 5.2)));
+        if (ta > 0) {
+          const pxl = B.cx, pyl = B.y + B.h * .04, span = reduce ? 1 : Math.min(1.3, t * .32);
+          ctx.save(); ctx.lineCap = 'round'; ctx.strokeStyle = C.text; ctx.lineWidth = 1.1; ctx.globalAlpha = ta * .45;
+          TRAILS.forEach(o => { const r = o.rr * B.h * .8; ctx.beginPath(); ctx.arc(pxl, pyl, r, o.a0, Math.min(o.a0 + span * o.w, .95 * Math.PI)); ctx.stroke(); });
+          ctx.restore();
+          telescope(B.cx - m * .05, B.y + B.h * .58, m * .5 * lerp(1, .75, seg(t, 4.4, 5.2)), ta);
+        }
+        const pa = ease(seg(t, 5, 5.6));
+        if (pa > 0) {
+          const bw = m * .78, bh = m * .14, bx = B.cx - bw / 2, by = B.y + B.h * .74 - bh / 2, cxp = bx + bh * .55, cyp = by + bh / 2;
+          ctx.save(); ctx.globalAlpha = pa;
+          ctx.fillStyle = C.panel; ctx.strokeStyle = C.data; ctx.lineWidth = 1.5;
+          rrect(bx, by, bw, bh, bh / 2); ctx.fill(); ctx.stroke();
+          ctx.strokeStyle = C.star; ctx.lineWidth = Math.max(2, bh * .08); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+          ctx.beginPath(); ctx.moveTo(cxp - bh * .1, cyp - bh * .17); ctx.lineTo(cxp + bh * .08, cyp); ctx.lineTo(cxp - bh * .1, cyp + bh * .17); ctx.stroke();
+          let caretX = cxp + bh * .35;
+          const qa = seg(t, 5.8, 6);
+          if (qa > 0) {
+            ctx.globalAlpha = pa * qa; ctx.fillStyle = C.text;
+            ctx.font = `800 ${bh * .62}px ${DISPLAY}`; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+            ctx.fillText('?', cxp + bh * .32, cyp + bh * .03);
+            caretX += ctx.measureText('?').width + 4;
+          }
+          if (reduce || Math.floor(g * 2) % 2 === 0) { ctx.globalAlpha = pa; ctx.fillStyle = C.data; ctx.fillRect(caretX, cyp - bh * .22, 2, bh * .44); }
+          ctx.restore();
+          const lk = ease(seg(t, 6.4, 7.4)), sX = B.cx, sY = B.y + B.h * .24;
+          if (lk > 0) {
+            ctx.save(); ctx.setLineDash([2, 6]); ctx.strokeStyle = C.data; ctx.lineWidth = 2; ctx.lineCap = 'round';
+            line(sX, by - 4, sX, lerp(by - 4, sY + m * .08, lk)); ctx.restore();
+          }
+          const sa = pop(t, 7.3);
+          if (sa > 0) {
+            const R = m * .06 * Math.min(1, sa);
+            system(sX, sY, R, [{ rx: R * 3.6, ry: R * .6, a: -Math.PI / 2 + (t - 7.6) * .9, r: Math.max(2.5, R * .18), alpha: ease(seg(t, 7.6, 8.2)), color: C.data }]);
+            if (t > 7.6) { const k = seg(t, 7.6, 8.8); ring(sX, sY, R * (1.5 + k * 4), (1 - k) * .8); }
+          }
+        }
+      }
+    }
+  ];
+  SCENES.forEach((s, i) => { s.text = SCRIPT[i]; s.tl = timeline(s.text); s.dur = s.tl.dur; });
+  const N = SCENES.length;
+  document.getElementById('total').textContent = Math.round(SCENES.reduce((a, s) => a + s.dur, 0));
+
+  // Barras de progreso y guion del panel
+  const barsEl = document.getElementById('bars');
+  barsEl.innerHTML = SCENES.map(() => '<span><i></i></span>').join('');
+  const fills = [...barsEl.querySelectorAll('i')];
+  const scriptEl = document.getElementById('script');
+  scriptEl.innerHTML = SCENES.map((s, i) => `<li><button class="blk" type="button" data-i="${i}"><span class="n">${String(i + 1).padStart(2, '0')}</span><span>${s.text}</span></button></li>`).join('');
+  const blks = [...scriptEl.querySelectorAll('.blk')];
+  blks.forEach(b => b.addEventListener('click', () => { nav(+b.dataset.i); closeSheet(); }));
+
+  let idx = 0, t = 0, playing = !reduce, ended = false, clean = false, last = performance.now();
+  let chunkIdx = -1, wordEls = [];
+  const S = () => SCENES[idx];
+
+  function renderSubs(tt) {
+    const { words, chunks } = S().tl;
+    if (reduce) {
+      if (chunkIdx !== 0) { subsEl.textContent = S().text; subsEl.classList.add('full'); chunkIdx = 0; }
+      return;
+    }
+    let ci = 0;
+    for (let i = 0; i < chunks.length; i++) if (chunks[i].s <= tt) ci = i;
+    if (ci !== chunkIdx) {
+      chunkIdx = ci;
+      subsEl.innerHTML = chunks[ci].ids.map(j => `<span class="w">${words[j].w}</span>`).join(' ');
+      wordEls = [...subsEl.children];
+      subsEl.classList.remove('pop'); void subsEl.offsetWidth; subsEl.classList.add('pop');
+    }
+    let cur = -1;
+    chunks[ci].ids.forEach((j, k) => { if (words[j].s <= tt) cur = k; });
+    wordEls.forEach((el, k) => el.classList.toggle('now', k === cur));
+  }
+  function go(i) {
+    idx = clamp(i, 0, N - 1);
+    t = 0; ended = false; chunkIdx = -1;
+    subsEl.classList.remove('full');
+    cv.setAttribute('aria-label', S().alt);
+    blks.forEach((b, j) => j === idx ? b.setAttribute('aria-current', 'step') : b.removeAttribute('aria-current'));
+  }
+  function syncUI() {
+    document.getElementById('pz').hidden = playing || ended;
+    document.getElementById('replay').hidden = !ended;
+  }
+  function nav(i) { go(i); playing = true; syncUI(); }
+  function toggle() {
+    if (ended) { go(0); playing = true; }
+    else playing = !playing;
+    syncUI();
+  }
+  function setClean(v) { clean = v; frameEl.classList.toggle('clean', v); }
+  // Un solo interruptor muestra u oculta subtítulos y barras
+  const bareSw = document.getElementById('bareSw');
+  let bare = false;
+  function setBare(v) { bare = v; frameEl.classList.toggle('bare', v); bareSw.setAttribute('aria-checked', String(!v)); }
+  bareSw.addEventListener('click', () => setBare(!bare));
+
+  // Toques: izquierda vuelve, derecha avanza, centro pausa. Mantener apretado sale del modo grabación.
+  const taps = document.getElementById('taps');
+  let lpTimer = null, lpFired = false;
+  taps.addEventListener('pointerdown', () => {
+    lpFired = false;
+    clearTimeout(lpTimer);
+    lpTimer = setTimeout(() => { lpFired = true; if (clean) setClean(false); }, 700);
+  });
+  taps.addEventListener('pointerup', e => {
+    clearTimeout(lpTimer);
+    if (lpFired) return;
+    const r = taps.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
+    if (x < .3) nav(idx - 1);
+    else if (x > .7) { if (idx === N - 1) { ended = true; playing = false; t = S().dur; syncUI(); } else nav(idx + 1); }
+    else toggle();
+  });
+  taps.addEventListener('pointercancel', () => clearTimeout(lpTimer));
+  taps.addEventListener('contextmenu', e => e.preventDefault());
+  document.getElementById('replay').addEventListener('click', () => { go(0); playing = true; syncUI(); });
+
+  // Panel: lateral en escritorio, hoja completa en el celular
+  const aside = document.getElementById('aside');
+  let wasPlaying = false;
+  function openSheet() { wasPlaying = playing; playing = false; syncUI(); aside.classList.add('open'); document.getElementById('close').focus(); }
+  function closeSheet() {
+    if (!aside.classList.contains('open')) return;
+    aside.classList.remove('open');
+    if (wasPlaying && !ended) { playing = true; syncUI(); }
+  }
+  document.getElementById('info').addEventListener('click', openSheet);
+  document.getElementById('close').addEventListener('click', closeSheet);
+  document.getElementById('restart').addEventListener('click', () => { closeSheet(); nav(0); });
+  document.getElementById('rec').addEventListener('click', () => { closeSheet(); setClean(true); nav(0); frameEl.focus(); });
+
+  document.addEventListener('keydown', e => {
+    if (e.target.closest && e.target.closest('input,textarea,select')) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); nav(idx + 1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); nav(idx - 1); }
+    else if (e.key === ' ' && !(e.target instanceof HTMLButtonElement)) { e.preventDefault(); toggle(); }
+    else if (e.key === 'h' || e.key === 'H') setClean(!clean);
+    else if (e.key === 's' || e.key === 'S') setBare(!bare);
+    else if (e.key === 'r' || e.key === 'R') nav(0);
+    else if (e.key === 'Escape') closeSheet();
+  });
+
+  // Tiempo global: inicio de cada escena. El movimiento ambiente sale de acá, no del reloj.
+  const START = [];
+  SCENES.reduce((a, s, i) => (START[i] = a) + s.dur, 0);
+  const TOTAL = START[N - 1] + SCENES[N - 1].dur;
+  function paint() {
+    const s = S();
+    // Movimiento reducido: estado final de cada escena
+    const tt = reduce ? s.dur - .01 : t;
+    ctx.clearRect(0, 0, W, H);
+    s.draw(tt * s.D / s.dur, START[idx] + t, geom());
+    ctx.globalAlpha = 1;
+    renderSubs(tt);
+    const pr = clamp(t / s.dur);
+    fills.forEach((el, i) => el.style.setProperty('--p', i < idx ? 1 : i > idx ? 0 : pr));
+  }
+  function frame(now) {
+    const dt = Math.min(.05, (now - last) / 1000);
+    last = now;
+    if (playing) {
+      t += dt;
+      if (t >= S().dur) {
+        if (idx < N - 1) go(idx + 1);
+        else { t = S().dur; playing = false; ended = true; syncUI(); }
+      }
+    }
+    paint();
+    requestAnimationFrame(frame);
+  }
+
+  // Contrato de render: cada cuadro sale del tiempo global T, en segundos
+  window.__duration = TOTAL;
+  window.renderAt = T => {
+    T = clamp(T, 0, TOTAL - 1e-3);
+    let i = N - 1;
+    while (i > 0 && START[i] > T) i--;
+    if (i !== idx) go(i);
+    t = T - START[i];
+    paint();
+  };
+
+  go(0);
+  syncUI();
+  // ?t=12.5 congela ese cuadro. ?render=1 prepara el render. ?bare=1 oculta subtítulos y barras.
+  const Q = new URLSearchParams(typeof location !== 'undefined' ? location.search : '');
+  if (Q.has('render') || Q.has('t')) {
+    playing = false;
+    setClean(true);
+    frameEl.classList.add('frozen');
+    if (Q.has('bare')) setBare(true);
+    syncUI();
+    window.renderAt(parseFloat(Q.get('t')) || 0);
+    if (document.fonts) document.fonts.ready.then(() => window.renderAt(parseFloat(Q.get('t')) || 0));
+  } else requestAnimationFrame(frame);
+})();
+</script>

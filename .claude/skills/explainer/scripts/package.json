@@ -1,0 +1,9 @@
+{
+  "name": "explainer-render",
+  "private": true,
+  "type": "module",
+  "description": "Renderiza explainers HTML cuadro por cuadro con Playwright y ffmpeg.",
+  "devDependencies": {
+    "playwright": "^1.64.1"
+  }
+}

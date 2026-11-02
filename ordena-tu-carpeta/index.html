@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ordena tu carpeta</title>
+<style>
+  :root {
+    --bg: #f6f3ee; --card: #ffffff; --ink: #231f1a; --muted: #6f675c; --line: #e4ddd1;
+    --accent: #2f6f4f; --accent-ink: #ffffff; --warn-bg: #fff3d6; --warn-ink: #6b4a00;
+    --ok-bg: #e2f1e8; --ok-ink: #1d4d34; --err-bg: #fbe3e0; --err-ink: #7a1f17;
+    --tag: #efe9dd;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17150f; --card: #211e17; --ink: #f0ebe0; --muted: #a39b8b; --line: #38332a;
+      --accent: #5fb88a; --accent-ink: #0d1f16; --warn-bg: #3a2e10; --warn-ink: #f3d58b;
+      --ok-bg: #173325; --ok-ink: #a8e0c0; --err-bg: #3d1b17; --err-ink: #f4b4ac; --tag: #2e2a20;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 96px; }
+  h1 { font-size: 1.7rem; margin: 0; letter-spacing: -.01em; }
+  .sub { color: var(--muted); margin: 4px 0 0; word-break: break-all; }
+  header.top { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;
+               justify-content: space-between; margin-bottom: 20px; }
+  .acciones { display: flex; gap: 10px; flex-wrap: wrap; }
+  button { font: inherit; font-weight: 600; border-radius: 10px; padding: 10px 18px; cursor: pointer;
+           border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+  button.primario { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  button:disabled { opacity: .5; cursor: default; }
+  button:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+  .aviso { border-radius: 12px; padding: 12px 16px; margin: 0 0 16px; }
+  .aviso.warn { background: var(--warn-bg); color: var(--warn-ink); }
+  .aviso.ok { background: var(--ok-bg); color: var(--ok-ink); }
+  .aviso.err { background: var(--err-bg); color: var(--err-ink); }
+  .aviso ul { margin: 6px 0 0; padding-left: 20px; }
+  .resumen { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+  .chip { background: var(--tag); border-radius: 999px; padding: 4px 12px; font-size: .9rem; }
+  .grupo { background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+           padding: 16px; margin-bottom: 18px; }
+  .grupo h2 { margin: 0; font-size: 1.2rem; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+  .grupo h2 .n { font-size: .85rem; font-weight: 500; color: var(--muted); }
+  .meta { color: var(--muted); font-size: .9rem; margin: 2px 0 12px; }
+  .meta a { color: var(--accent); }
+  .rejilla { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  figure { margin: 0; }
+  .foto { position: relative; aspect-ratio: 4/3; background: var(--tag); border-radius: 10px; overflow: hidden; }
+  .foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .vid { position: absolute; right: 6px; bottom: 6px; background: rgba(0,0,0,.7); color: #fff;
+         font-size: .72rem; padding: 2px 7px; border-radius: 999px; }
+  figcaption { margin-top: 5px; font-size: .88rem; line-height: 1.25; word-break: break-word; }
+  figcaption small { display: block; color: var(--muted); font-size: .75rem; }
+  details.resto { background: var(--card); border: 1px dashed var(--line); border-radius: 16px; padding: 12px 16px; }
+  details.resto summary { cursor: pointer; font-weight: 600; }
+  details.resto .rejilla { margin-top: 12px; }
+  .vacio { text-align: center; padding: 40px 16px; background: var(--card); border: 1px solid var(--line);
+           border-radius: 16px; margin-bottom: 20px; }
+  .vacio h2 { margin: 0 0 8px; }
+  .hojas { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+  .hojas img { width: 100%; border-radius: 8px; border: 1px solid var(--line); display: block; }
+  dialog { border: 1px solid var(--line); border-radius: 16px; background: var(--card); color: var(--ink);
+           max-width: 440px; padding: 24px; }
+  dialog::backdrop { background: rgba(0,0,0,.45); }
+  dialog p { margin-top: 0; }
+  dialog .acciones { justify-content: flex-end; margin-top: 18px; }
+  @media (max-width: 520px) { .rejilla { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); } }
+</style>
+</head>
+<body>
+<main>
+  <header class="top">
+    <div>
+      <h1>Ordena tu carpeta</h1>
+      <p class="sub" id="ruta"></p>
+    </div>
+    <div class="acciones" id="botones"></div>
+  </header>
+  <div id="mensajes"></div>
+  <div id="contenido"><p class="sub">Cargando…</p></div>
+</main>
+
+<dialog id="confirmar">
+  <p id="confirmar-texto"></p>
+  <div class="acciones">
+    <button id="confirmar-no">Cancelar</button>
+    <button id="confirmar-si" class="primario">Sí, hacerlo</button>
+  </div>
+</dialog>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  let estado = null;
+  let ocupado = false;
+  let mensaje = null;          // {tipo, texto, lista}
+  let ultimaFirma = "";
+
+  // ---- ayudas para construir el DOM sin meter texto como HTML
+  function el(tag, props = {}, ...hijos) {
+    const e = document.createElement(tag);
+    for (const [k, v] of Object.entries(props)) {
+      if (v == null) continue;
+      if (k === "class") e.className = v;
+      else if (k === "text") e.textContent = v;
+      else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+      else e.setAttribute(k, v);
+    }
+    for (const h of hijos.flat()) if (h != null) e.append(h);
+    return e;
+  }
+  const plural = (n, uno, varios) => `${n} ${n === 1 ? uno : varios}`;
+
+  function fechas(items) {
+    const ds = items.map((i) => estado.archivos[i.n]?.fecha).filter(Boolean).sort();
+    if (!ds.length) return "";
+    const f = (s) => new Date(s).toLocaleDateString("es", { day: "numeric", month: "short", year: "numeric" });
+    const a = f(ds[0]), b = f(ds[ds.length - 1]);
+    return a === b ? a : `${a} – ${b}`;
+  }
+  function lugar(items) {
+    const ps = items.map((i) => estado.archivos[i.n]).filter((a) => a && a.lat != null);
+    if (!ps.length) return null;
+    const lat = ps.reduce((s, a) => s + a.lat, 0) / ps.length;
+    const lon = ps.reduce((s, a) => s + a.lon, 0) / ps.length;
+    return `https://www.openstreetmap.org/?mlat=${lat.toFixed(5)}&mlon=${lon.toFixed(5)}#map=13/${lat.toFixed(5)}/${lon.toFixed(5)}`;
+  }
+
+  function foto(n, titulo, original) {
+    const a = estado.archivos[n] || {};
+    return el("figure", {},
+      el("div", { class: "foto" },
+        el("img", { src: `/miniaturas/${String(n).padStart(4, "0")}.jpg`, loading: "lazy", alt: titulo }),
+        a.tipo === "video" ? el("span", { class: "vid", text: "▶ vídeo" }) : null),
+      el("figcaption", { title: original },
+        titulo, original && original !== titulo ? el("small", { text: `antes: ${original}` }) : null));
+  }
+
+  function tarjeta(g) {
+    const url = lugar(g.items);
+    const f = fechas(g.items);
+    const meta = el("p", { class: "meta" },
+      [f, g.descripcion].filter(Boolean).join(" · "),
+      url ? [f || g.descripcion ? " · " : "", el("a", { href: url, target: "_blank", rel: "noopener", text: "ver en el mapa" })] : null);
+    return el("section", { class: "grupo" },
+      el("h2", {}, g.carpeta, el("span", { class: "n", text: plural(g.items.length, "archivo", "archivos") })),
+      (f || g.descripcion || url) ? meta : el("div", { style: "height:12px" }),
+      el("div", { class: "rejilla" }, g.items.map((i) => foto(i.n, i.final, i.original))));
+  }
+
+  // ---- pintado
+  function pintar() {
+    const e = estado;
+    $("ruta").textContent = e.carpeta;
+    const caja = $("contenido");
+    const botones = $("botones");
+    botones.replaceChildren();
+    const msgs = $("mensajes");
+    msgs.replaceChildren();
+
+    if (mensaje) {
+      msgs.append(el("div", { class: `aviso ${mensaje.tipo}` }, mensaje.texto,
+        mensaje.lista?.length ? el("ul", {}, mensaje.lista.map((t) => el("li", { text: t }))) : null));
+    }
+
+    if (!e.preparada) {
+      caja.replaceChildren(el("div", { class: "vacio" },
+        el("h2", { text: "Esta carpeta aún no está preparada" }),
+        el("p", { class: "sub", text: "En la terminal, ejecuta: python3 ordena.py preparar \"<carpeta>\"" })));
+      return;
+    }
+
+    const plan = e.plan;
+    const hayPlan = plan && plan.grupos.length > 0;
+    const movibles = hayPlan ? plan.grupos.reduce((s, g) => s + g.items.length, 0) : 0;
+
+    if (plan?.avisos?.length && !e.movido) {
+      msgs.append(el("div", { class: "aviso warn" }, "Ojo con el plan:",
+        el("ul", {}, plan.avisos.slice(0, 8).map((t) => el("li", { text: t }))),
+        plan.avisos.length > 8 ? el("p", { text: `…y ${plan.avisos.length - 8} más.` }) : null));
+    }
+
+    if (e.movido) {
+      msgs.prepend(el("div", { class: "aviso ok" },
+        `Hecho: ${plural(movibles, "archivo movido", "archivos movidos")} a ${plural(plan.grupos.length, "carpeta", "carpetas")}. `,
+        "Si no te convence, puedes devolver todo a como estaba."));
+      botones.append(el("button", { text: "Deshacer todo", disabled: ocupado ? "" : null, onclick: () => pedirConfirmacion(
+        "Voy a devolver cada archivo a su carpeta y con su nombre de antes, y quitar las subcarpetas que queden vacías.",
+        "/api/deshacer") }));
+    } else if (hayPlan) {
+      botones.append(el("button", { class: "primario", text: `Mover ${plural(movibles, "archivo", "archivos")}`,
+        disabled: ocupado ? "" : null,
+        onclick: () => pedirConfirmacion(
+          `Se van a crear o usar ${plural(plan.grupos.length, "carpeta", "carpetas")} dentro de tu carpeta y se moverán y renombrarán ${plural(movibles, "archivo", "archivos")}. Se puede deshacer después.`,
+          "/api/mover") }));
+    }
+
+    if (!hayPlan && !e.movido) {
+      caja.replaceChildren(
+        el("div", { class: "vacio" },
+          el("h2", { text: "Todavía no hay propuesta" }),
+          el("p", { class: "sub", text: `Hay ${plural(e.total, "archivo", "archivos")} preparados. Pídele a Claude que mire las hojas de abajo y escriba el plan; esta página se actualiza sola.` })),
+        el("div", { class: "hojas" }, e.hojas.map((h) =>
+          el("a", { href: `/hojas/${h.archivo.replace(".jpg", "")}.jpg`, target: "_blank" },
+            el("img", { src: `/hojas/${h.archivo}`, alt: `Hoja con los archivos ${h.desde} a ${h.hasta}`, loading: "lazy" })))));
+      return;
+    }
+
+    const partes = [];
+    const fotos = Object.values(e.archivos);
+    const nVideos = fotos.filter((a) => a.tipo === "video").length;
+    partes.push(el("div", { class: "resumen" },
+      el("span", { class: "chip", text: plural(e.total, "archivo", "archivos") }),
+      nVideos ? el("span", { class: "chip", text: plural(nVideos, "vídeo", "vídeos") }) : null,
+      el("span", { class: "chip", text: plural(plan.grupos.length, "carpeta", "carpetas") }),
+      plan.sin_clasificar.length ? el("span", { class: "chip", text: `${plan.sin_clasificar.length} se quedan donde están` }) : null));
+    plan.grupos.forEach((g) => partes.push(tarjeta(g)));
+    if (plan.sin_clasificar.length) {
+      partes.push(el("details", { class: "resto" },
+        el("summary", { text: `Se quedan donde están (${plan.sin_clasificar.length})` }),
+        el("div", { class: "rejilla" }, plan.sin_clasificar.map((n) => foto(n, e.archivos[n].nombre, null)))));
+    }
+    caja.replaceChildren(...partes);
+  }
+
+  // ---- datos
+  async function cargar(forzar) {
+    try {
+      const r = await fetch("/api/estado", { cache: "no-store" });
+      const nuevo = await r.json();
+      const firma = JSON.stringify([nuevo.plan, nuevo.movido, nuevo.preparada, nuevo.total]);
+      if (forzar || firma !== ultimaFirma) {
+        ultimaFirma = firma;
+        estado = nuevo;
+        pintar();
+      }
+    } catch {
+      $("contenido").replaceChildren(el("div", { class: "aviso err", text: "No consigo hablar con el programa. ¿Sigue abierto en la terminal?" }));
+    }
+  }
+
+  async function accion(url) {
+    ocupado = true; mensaje = null; pintar();
+    try {
+      const r = await fetch(url, { method: "POST", headers: { "X-Ordena": "1" } });
+      const d = await r.json();
+      if (!d.ok) mensaje = { tipo: "err", texto: d.error || "Algo salió mal." };
+      else if (url.endsWith("deshacer")) {
+        mensaje = d.problemas?.length
+          ? { tipo: "warn", texto: `Devolví ${d.devueltos} archivos, pero hubo problemas:`, lista: d.problemas }
+          : { tipo: "ok", texto: `Todo volvió a como estaba (${plural(d.devueltos, "archivo", "archivos")}).` };
+      } else if (d.no_encontrados?.length) {
+        mensaje = { tipo: "warn", texto: "Algunos archivos ya no estaban y se saltaron:", lista: d.no_encontrados };
+      }
+    } catch {
+      mensaje = { tipo: "err", texto: "No consigo hablar con el programa. ¿Sigue abierto en la terminal?" };
+    }
+    ocupado = false;
+    await cargar(true);
+  }
+
+  function pedirConfirmacion(texto, url) {
+    $("confirmar-texto").textContent = texto;
+    const d = $("confirmar");
+    $("confirmar-no").onclick = () => d.close();
+    $("confirmar-si").onclick = () => { d.close(); accion(url); };
+    d.showModal();
+  }
+
+  cargar(true);
+  setInterval(() => { if (!ocupado) cargar(false); }, 3000);
+})();
+</script>
+</body>
+</html>

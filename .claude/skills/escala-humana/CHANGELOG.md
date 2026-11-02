@@ -11,3 +11,6 @@
 - Corte de nivel confirmado por Fernando: Estratégico desde 3,5. La Guía de Dimensiones ("más de 4") quedó desactualizada en ese punto.
 - Agregados los 24 ítems por nombre, tomados del informe web real.
 - Pendiente: confirmar el corte de Reactivo (hoy "menos de 3", de la Guía).
+
+## v1.2 (2026-11-02)
+- Registrado el ángulo 14 (OK de Fernando) en `angulos-usados.md`: explainer de difusión 01.

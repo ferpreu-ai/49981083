@@ -74,7 +74,7 @@ Esto es una **excepción a la regla de "sin texto en pantalla"**, igual que el p
 - Un par por escena, nunca dos.
 - Máximo 4 palabras por lado.
 - Aparece el lado "herramienta", se tacha o se apaga, y entra el lado "mapa" con el acento. Anclá cada lado a la palabra de la voz con `F.at('palabra')`.
-- Poné `noSubs: true` en esa escena, así no se duplica el texto.
+- Si cada lado es una sola palabra (como "Número" y "Mapa"), dejá los subtítulos. Si el par es la frase completa, poné `noSubs: true` en esa escena para no duplicar el texto.
 - Este es el único texto que se permite en pantalla en una escena. El dibujo del mapa va debajo, sin texto.
 
 ## Motivos visuales

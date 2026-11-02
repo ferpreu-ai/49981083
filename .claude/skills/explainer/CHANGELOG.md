@@ -10,3 +10,8 @@
 - `SKILL.md`: llama a la skill `escala-humana` para elegir ángulo y datos del modelo.
 - `perfil.md` de Fernando versionado (se quitó del .gitignore).
 - Pendiente: logo oficial en SVG (no lo encontré en el Drive) y probar el primer video real.
+
+## v1.2 (2026-11-02)
+- Primer video: `videos/01-difusion-mapa/explainer.html` (difusión, 9:16, 46 s, ángulo 14 con intuición). Escenas por tema verde y claro (`tema` en cada escena y `data-tema` en el cuadro).
+- Karaoke de marca: palabra dicha con marcador lima en la variante clara.
+- Pares de contraste con una palabra por lado conviven con los subtítulos.

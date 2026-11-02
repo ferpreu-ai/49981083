@@ -120,6 +120,42 @@ function grid(F, step = 5) {
 }
 ```
 
+## Escala Humana (marca de Fernando)
+
+Paleta y tipografía de la marca Escala Humana (Ferpreu Consultora), tomadas de la plantilla oficial `Escala-Humana-Plantilla.pptx`. Dos variantes: **claro** (default, para explicar) y **verde** (para ganchos, aperturas y cierres). Se pueden alternar entre escenas, pero un video usa una sola como base.
+
+**Claro (default):**
+
+```css
+--bg:#F4F2E6; --panel:#FFFFFF; --panel-2:#E0DECB; --line:#C7D6CC; --glass:rgba(244,242,230,.90);
+--ink:#212529; --muted:#5A5A4E; --accent:#07503F; --accent-2:#07503F; --ok:#07503F; --warn:#B4B2A9;
+--hl:#E8FE85; --sub-ink:#212529; --sub-edge:#F4F2E6; --track:rgba(0,0,0,.15);
+--display:Georgia,"Gelasio","Times New Roman",serif; --body:"Helvetica Neue","Arimo",Helvetica,Arial,sans-serif; --mono:"Helvetica Neue","Arimo",Helvetica,Arial,sans-serif;
+color-scheme:light;
+```
+
+**Verde (oscuro):**
+
+```css
+--bg:#07503F; --panel:#0B5E4A; --panel-2:#0E6B54; --line:#2F7A66; --glass:rgba(7,80,63,.88);
+--ink:#F4F2E6; --muted:#C7D6CC; --accent:#E8FE85; --accent-2:#E8FE85; --ok:#E8FE85; --warn:#B4B2A9;
+--hl:#E8FE85; --sub-ink:#F4F2E6; --sub-edge:#07503F; --track:rgba(255,255,255,.22);
+--display:Georgia,"Gelasio","Times New Roman",serif; --body:"Helvetica Neue","Arimo",Helvetica,Arial,sans-serif; --mono:"Helvetica Neue","Arimo",Helvetica,Arial,sans-serif;
+color-scheme:dark;
+```
+
+Fuentes (respaldo para renderizar sin Georgia ni Helvetica Neue, métricamente compatibles): `family=Gelasio:wght@400;700&family=Arimo:wght@400;700`
+
+Reglas de marca:
+
+- Un solo acento: el verde `#07503F` en claro, el lima `#E8FE85` en verde. Nunca los dos sobre el mismo fondo: el lima sobre crema no se lee.
+- `--hl` (lima) es el marcador: resalta la palabra dicha en el karaoke de la variante clara, como un subrayador sobre el verde de la tinta. En la variante verde, es el acento.
+- Títulos en Georgia, texto en Helvetica Neue. Sin mono: en la marca no existe. Para números usá Georgia.
+- Trazo: líneas de 0,5 a 0,8 unidades, planas, sin sombras ni brillos. Rellenos en crema y verde al 8 %–20 %. Aire generoso: la marca es sobria.
+- Contraste de subtítulos: carbón sobre crema (13:1) y crema sobre verde (9:1). Ambos pasan 4,5:1.
+- El logo, si lo pasa, va solo en la última escena, chico, en una esquina segura. No lo inventes ni lo dibujes a mano.
+- Motivos visuales de la marca (mapa, lote, camino, brújula): ver `references/escala-humana.md`.
+
 ## Tu marca
 
 Pedí tres colores en hex: fondo, texto y acento. Pedí una tipografía de Google Fonts. Derivá el resto:
@@ -147,6 +183,7 @@ El perfil define el tono. Estas reglas valen para todos:
 | Cercano y con humor | Segunda persona, frases que fluyen, un chiste de observación por guion como máximo. |
 | Claro y neutro | Frases medianas, vocabulario común, sin modismos regionales. |
 | Formal | Tercera persona o "usted", sin humor, verbos precisos. |
+| Voz de Fernando | Plural inclusivo, escena del agro, preguntas en cascada, frases cortas que se quedan. Ver `references/escala-humana.md`. |
 | Imitá un texto mío | Ver abajo. |
 
 ### Imitar un texto del usuario

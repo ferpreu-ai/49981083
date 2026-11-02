@@ -1,6 +1,6 @@
 ---
 name: explainer
-description: Crea explainers animados. Son videos explicativos hechos en HTML que se reproducen solos, con guion, una escena animada por bloque, subtítulos sincronizados, modo grabación y exportación a MP4. Sirve para vertical 9:16 (TikTok, Reels, Shorts), horizontal 16:9 (YouTube, clases, presentaciones), cuadrado 1:1 y 4:5. Antes de construir pregunta formato, voz, estilo visual, duración y tono, y guarda las respuestas como perfil. Usar SIEMPRE que el usuario pida "un explainer", "un video explicativo", "animated explainer", "explicame esto con una animación", "animá esta historia", "un reel animado", "un video animado para YouTube", o quiera convertir una noticia, un concepto, una clase, un producto o un dato en una animación para narrar, aunque no diga "explainer". No usar para gráficos estáticos, diapositivas ni edición de video filmado.
+description: Crea explainers animados. Son videos explicativos hechos en HTML que se reproducen solos, con guion, una escena animada por bloque, subtítulos sincronizados, modo grabación y exportación a MP4. Sirve para vertical 9:16 (TikTok, Reels, Shorts), horizontal 16:9 (YouTube, clases, presentaciones), cuadrado 1:1 y 4:5. Antes de construir pregunta formato, voz, estilo visual, duración y tono, y guarda las respuestas como perfil. Incluye el estilo de marca Escala Humana y la voz de Fernando. Usar SIEMPRE que el usuario pida "un explainer", "un video explicativo", "animated explainer", "explicame esto con una animación", "animá esta historia", "un reel animado", "un video animado para YouTube", o quiera convertir una noticia, un concepto, una clase, un producto o un dato en una animación para narrar, aunque no diga "explainer". No usar para gráficos estáticos, diapositivas ni edición de video filmado.
 ---
 
 # Explainer animado
@@ -18,6 +18,8 @@ Este skill produce una página HTML autocontenida. La página se reproduce sola,
 | `references/escenas.md` | Patrones visuales que funcionan, errores frecuentes e íconos del motor. |
 | `references/movimiento.md` | Números de movimiento y laboratorio de fotos. |
 | `references/audio.md` | Sincronía con una voz ya grabada. |
+| `references/escala-humana.md` | Marca Escala Humana: piezas tipo, voz de Fernando, motivos visuales del mapa, pares de contraste. Leerlo siempre que el estilo sea Escala Humana o el tema sea el programa. |
+| `perfil.md` | Perfil guardado de Fernando. Se usa por defecto. |
 | `scripts/simular.cjs` | Prueba la reproducción completa con Node, sin navegador. |
 | `scripts/render.mjs` | Fotos, hoja de contacto y MP4. Necesita Playwright y ffmpeg. |
 | `scripts/palabras.mjs` | Convierte una transcripción de Whisper en tiempos por palabra. |
@@ -47,21 +49,21 @@ El mismo motor sirve para estilos muy distintos. Preguntá antes de investigar o
 |---|---|---|
 | 1 | Formato | Vertical 9:16 (TikTok, Reels, Shorts) · Horizontal 16:9 (YouTube, clase, presentación) · Cuadrado 1:1 · Feed 4:5 |
 | 2 | Voz | La grabo yo después · Ya tengo el audio grabado · Sin voz: el texto va en pantalla |
-| 3 | Estilo visual | Noche · Papel · Pizarra · Plano color · Plano técnico · Tu marca: colores y tipografía propios |
+| 3 | Estilo visual | Noche · Papel · Pizarra · Plano color · Plano técnico · Escala Humana: marca de Fernando · Tu marca: colores y tipografía propios |
 | 4 | Duración | 30–45 s · 60–90 s · 2–3 min |
 
-Describí cada estilo en una línea con los datos de `references/estilos.md`. Si la herramienta admite 4 opciones, nombrá Plano técnico y Tu marca en el texto de la pregunta: el usuario las elige con "Otro".
+Describí cada estilo en una línea con los datos de `references/estilos.md`. Si la herramienta admite 4 opciones, nombrá Plano técnico, Escala Humana y Tu marca en el texto de la pregunta: el usuario las elige con "Otro".
 
 **Ronda 2, solo lo que falte:**
 
 | # | Pregunta | Opciones |
 |---|---|---|
-| 5 | Tono del guion | Cercano y con humor · Claro y neutro · Formal · Imitá un texto mío |
+| 5 | Tono del guion | Cercano y con humor · Claro y neutro · Formal · Voz de Fernando · Imitá un texto mío |
 | 6 | Subtítulos | Karaoke: resalta la palabra dicha · Simples · Sin subtítulos |
 | 7 | Guion | Lo escribís vos · Uso el mío |
 | 8 | Idioma y trato | Deducilo del pedido. Preguntá solo si no está claro: vos, tú, usted, inglés. |
 
-Si elige "Imitá un texto mío", pedí que pegue un texto suyo. Si el usuario tiene un skill propio de escritura en su voz, usalo para el guion.
+Si elige "Voz de Fernando", usá la skill `voz-fernando-preumayr` para el guion. Si elige "Imitá un texto mío", pedí que pegue un texto suyo. Si el usuario tiene un skill propio de escritura en su voz, usalo para el guion. Fernando tiene `voz-fernando-preumayr`.
 
 **Defaults** si responde "elegí vos": vertical 9:16, la grabo yo, Noche, 60–90 s, claro y neutro, karaoke, idioma del pedido.
 
@@ -150,6 +152,7 @@ Reconstruir una animación cuesta mucho más que corregir un texto. Por eso se a
 
 ### Paso 1: investigación, guion y storyboard
 
+0. **Si el tema es Escala Humana o el estilo es Escala Humana**, leé `references/escala-humana.md` y llamá a la skill `escala-humana` para el ángulo y los datos del modelo. Los datos del programa salen de ahí, no de una búsqueda web.
 1. **Investigá.** Buscá fuentes primarias. Verificá cada cifra. Distinguí lo confirmado de lo reportado. Guardá los links para el panel de fuentes. Sin búsqueda web, trabajá con el material del usuario y marcá cada dato dudoso con `[VERIFICAR]`.
 2. **Escribí el guion** con el tono del perfil. Si el usuario trajo su guion, respetalo y solo partilo en bloques.
    - Primera frase: un gancho. Un dato con fecha, una paradoja, una pregunta que pica o una confesión.

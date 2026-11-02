@@ -82,3 +82,14 @@ Para música de fondo, mezclala debajo de la voz y normalizá a −14 LUFS:
 ```bash
 ffmpeg -i out/explainer.mp4 -i voz.mp3 -i musica.mp3 -filter_complex "[2:a]volume=0.15[m];[1:a][m]amix=inputs=2:duration=first,loudnorm=I=-14:TP=-1:LRA=11[a]" -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k -shortest -movflags +faststart out/explainer-final.mp4
 ```
+
+## Sin transcriptor: alinear por las pausas
+
+Si no hay Whisper ni forma de bajar un modelo, y el guion es conocido, se puede alinear por la estructura de pausas:
+
+1. Pasá el audio a mono 16 kHz y calculá la energía cada 10 ms. Marcá como voz lo que supera el 6 % del percentil 98.
+2. Uní los huecos de menos de 120 ms. Cada tramo de voz suele ser una frase o una cláusula.
+3. Asigná cada tramo a una cláusula del guion (separadas por coma, punto o dos puntos). Compará la duración real con la esperada por sílabas (unos 0,16 s por sílaba). Si un tramo no calza, probá partir o unir.
+4. Repartí las palabras dentro de cada tramo según sus sílabas.
+
+La precisión es de unos 150 ms por palabra. Los inicios de cada frase son exactos. Si se puede transcribir de verdad, es mejor.

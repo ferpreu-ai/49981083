@@ -15,3 +15,6 @@
 - Primer video: `videos/01-difusion-mapa/explainer.html` (difusión, 9:16, 46 s, ángulo 14 con intuición). Escenas por tema verde y claro (`tema` en cada escena y `data-tema` en el cuadro).
 - Karaoke de marca: palabra dicha con marcador lima en la variante clara.
 - Pares de contraste con una palabra por lado conviven con los subtítulos.
+
+## v1.3 (2026-11-02)
+- Video 01 sincronizado con la voz de Fernando (60 s, 118 palabras). Sin transcriptor disponible: alineación por pausas, documentada en `references/audio.md`.

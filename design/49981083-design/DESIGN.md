@@ -1,194 +1,152 @@
-# 49981083 DESIGN.md
+# Panel de investigación — DESIGN.md
 
-> Auto-generated design system — reverse-engineered via static analysis by skillui.
-> Frameworks: None detected
-> Colors: 5 · Fonts: 1 · Components: 0
-> Icon library: not detected · State: not detected
-> Primary theme: light · Dark mode toggle: no · Motion: none
+> Generado con skillui y corregido a mano contra `styles.css` e `index.html`.
+> Fuente de verdad: las variables de `:root` en `styles.css`.
 
 ---
 
-## 1. Visual Theme & Atmosphere
+## 1. Atmósfera visual
 
-This is a **light-themed** interface with a cool, approachable feel. The light background emphasizes content clarity. Typography uses **Segoe UI** throughout — a clean, modern choice that maintains consistency. Spacing follows a **4px base grid** (compact density), with scale: 2, 4, 6, 8, 10, 12, 14, 16px. The palette is predominantly monochromatic with **#2f6feb** as the single accent color — used sparingly for interactive elements and emphasis.
+Interfaz **clara, plana y sobria**: un fondo gris muy suave (`--bg`), superficies blancas separadas por bordes finos y un único color de acento azul. Pensada para leer tablas de registros agrupados, sin adornos. Sin sombras, sin gradientes, sin blur, sin dark mode.
 
 ---
 
-## 2. Color Palette & Roles
+## 2. Colores (tokens reales)
 
-| Token | Hex | Role | Use |
-|---|---|---|---|
-| background | `#ffffff` | background | Page background, darkest surface |
-| border | `#e2e5ea` | surface | Card and panel backgrounds |
-| text-muted | `#6b7280` | text-muted | Captions, placeholders, secondary info |
-| accent | `#2f6feb` | accent | CTAs, links, focus rings, active states |
-| accent-soft | `#e8f0fe` | accent | CTAs, links, focus rings, active states |
+| Token | Hex | Uso |
+|---|---|---|
+| `--bg` | `#f5f6f8` | Fondo de página y de los campos de formulario |
+| `--surface` | `#ffffff` | Header, toolbar, tarjetas de grupo, estado vacío |
+| `--border` | `#e2e5ea` | Todos los bordes y separadores (nunca como fondo) |
+| `--text` | `#1c2128` | Texto principal |
+| `--text-muted` | `#6b7280` | Etiquetas, metadatos, encabezados de tabla, resumen |
+| `--accent` | `#2f6feb` | Badges, fechas recientes, foco, acciones |
+| `--accent-soft` | `#e8f0fe` | Fondo del encabezado de cada grupo |
 
-### CSS Variable Tokens
+Un solo valor suelto fuera de los tokens: `#fafbfc` (hover de fila de tabla). Si se vuelve a usar, convertirlo en token.
 
 ```css
---border: #e2e5ea;
---text-muted: #6b7280;
---accent: #2f6feb;
---accent-soft: #e8f0fe;
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --border: #e2e5ea;
+  --text: #1c2128;
+  --text-muted: #6b7280;
+  --accent: #2f6feb;
+  --accent-soft: #e8f0fe;
+  --radius: 10px;
+}
 ```
-
 
 ---
 
-## 3. Typography Rules
+## 3. Tipografía
 
-**Font Stack:**
-- **Segoe UI** — Heading 1, Heading 2, Heading 3, Body, Caption
+**Familia:** `"Segoe UI", system-ui, -apple-system, Roboto, sans-serif`, definida en `:root`. No mezclar familias.
 
-| Role | Font | Size | Weight |
+| Rol | Tamaño | Peso | Notas |
 |---|---|---|---|
-| Heading 1 | Segoe UI | 48px / 3rem | 700 |
-| Heading 2 | Segoe UI | 32px / 2rem | 600 |
-| Heading 3 | Segoe UI | 24px / 1.5rem | 600 |
-| Body | Segoe UI | 16px / 1rem | 400 |
-| Caption | Segoe UI | 12px / 0.75rem | 400 |
+| Título de página (h1) | 1.4rem | por defecto (bold) | Solo en el header |
+| Nombre de grupo | 1rem | 600 | |
+| Texto de tabla | 0.88rem | 400 | |
+| Campos y selects | 0.9rem | 400 | |
+| Subtítulo del header | 0.9rem | 400 | Color `--text-muted` |
+| Etiquetas del toolbar, resumen | 0.85rem | 400 | Color `--text-muted` |
+| Meta de grupo | 0.8rem | 400 | Color `--text-muted` |
+| Encabezado de tabla | 0.75rem | 600 | MAYÚSCULAS, `letter-spacing: 0.03em`, `--text-muted` |
+| Badge | 0.75rem | 600 | |
 
-**Typographic Rules:**
-- Use **Segoe UI** for all text — do not mix font families
-- Maintain consistent hierarchy: no more than 3-4 font sizes per screen
-- Headings use bold (600-700), body uses regular (400)
-- Line height: 1.5 for body text, 1.2 for headings
-- Use color and opacity for secondary hierarchy, not additional font sizes
-
+Reglas: la jerarquía secundaria se hace con `--text-muted`, no con más tamaños. Los encabezados de tabla son siempre mayúsculas y pequeños.
 
 ---
 
-## 4. Component Stylings
+## 4. Layout y espaciado
 
-No components detected. Scan `src/components/` or `components/` to populate this section.
-
----
-
-## 5. Layout Principles
-
-- **Base spacing unit:** 4px
-- **Spacing scale:** 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 32
-- **Border radius:** 6px, 999px
-- **Max content width:** 1080px
-
-**Spacing as Meaning:**
-| Spacing | Use |
-|---|---|
-| 4-8px | Tight: related items within a group |
-| 12-16px | Medium: between groups |
-| 24-32px | Wide: between sections |
-| 48px+ | Vast: major section breaks |
-
+- Contenido centrado: `max-width: 1080px`, `margin: 24px auto`, padding lateral 24px, 48px abajo.
+- Header: padding `20px 32px`, flex con `gap: 16px` y `flex-wrap`.
+- Separación entre tarjetas de grupo: 18px. Entre toolbar y lista: 20px.
+- Gaps habituales: 4px (título/subtítulo), 12px (entre controles), 16px.
+- Padding interno: toolbar `14px 16px`, encabezado de grupo `14px 18px`, celdas `10px 18px`.
+- No hay breakpoints: la adaptación a pantallas chicas depende de `flex-wrap`. Si se agrega mobile, definirlo acá primero.
 
 ---
 
-## 6. Depth & Elevation
+## 5. Radios, bordes y elevación
 
-No box-shadow values detected. The design appears to use a flat visual style.
-
-
----
-
-## 8. Do's and Don'ts
-
-### Do's
-
-- Use `#2f6feb` for interactive elements (buttons, links, focus rings)
-- Use `#ffffff` as the primary page background
-- Use **Segoe UI** for all UI text
-- Follow the **4px** spacing grid for all margins, padding, and gaps
-- Use border and background shifts for elevation — not shadows
-- Use border-radius from the scale: 6px, 999px
-
-### Don'ts
-
-- Don't introduce colors outside this palette — extend the design tokens first
-- Don't mix font families — use Segoe UI consistently
-- Don't use arbitrary spacing values — stick to multiples of 4px
-- Don't add box-shadow — this design system uses flat elevation
-- Don't use gradients — the design uses solid colors only
-- Don't use arbitrary border-radius values — pick from the defined scale
-- Don't use backdrop-blur or blur effects
-
-### Anti-Patterns (detected from codebase)
-
-- No box-shadow on any element
-- No gradient backgrounds
-- No blur or backdrop-blur effects
-- No zebra striping on tables/lists
-
+- `--radius: 10px` → tarjetas de grupo, toolbar, estado vacío.
+- `6px` → campos de formulario (select, search).
+- `999px` → solo badges (píldora).
+- Elevación **solo con bordes** de 1px `--border` y cambios de fondo. Sin `box-shadow`.
+- Estado vacío: borde **punteado** (`1px dashed`).
 
 ---
 
-## 9. Responsive Behavior
+## 6. Componentes
 
-No breakpoints detected. Consider adding responsive breakpoints to the design system.
+**Header (`.app-header`)**: fondo `--surface`, borde inferior, título + subtítulo a la izquierda.
+
+**Toolbar (`.toolbar`)**: caja blanca con borde y `--radius`. Contiene filtros (label + control), un `.spacer` con `flex: 1` y el resumen alineado a la derecha.
+
+**Campos (`select`, `input[type=search]`)**: borde `--border`, radio 6px, padding `7px 10px`, fondo `--bg`, texto `--text`. El buscador tiene `min-width: 220px`.
+
+**Tarjeta de grupo (`.group-section`)**: fondo `--surface`, borde, `--radius`, `overflow: hidden`, margen inferior 18px.
+- Encabezado (`.group-header`): fondo `--accent-soft`, borde inferior, nombre a la izquierda y meta a la derecha.
+
+**Badge (`.badge`)**: fondo `--accent`, texto blanco, radio 999px, padding `2px 10px`, 0.75rem, peso 600, `margin-left: 8px`.
+
+**Tabla (`table.records`)**: ancho completo, bordes solo horizontales de 1px, sin borde en la última fila, hover `#fafbfc`, sin zebra.
+
+**Fecha reciente (`.fecha-reciente`)**: color `--accent`, peso 600.
+
+**Estado vacío (`.empty-state`)**: centrado, `--text-muted`, padding `40px 20px`, fondo `--surface`, borde punteado.
 
 ---
 
-## 10. Agent Prompt Guide
+## 7. Recetas para construir UI nueva
 
-Use these as starting points when building new UI:
-
-### Build a Card
-
+### Tarjeta
 ```
-Background: #e2e5ea
-Border: 1px solid var(--border)
-Radius: 999px
-Padding: 16px
-Font: Segoe UI
-No shadows — use borders and surface colors for depth.
+Fondo: var(--surface)
+Borde: 1px solid var(--border)
+Radio: var(--radius)  (10px)
+Padding: 14px 18px
+Sin sombra
 ```
 
-### Build a Button
-
+### Botón (no existe todavía en la app; propuesta coherente)
 ```
-Primary: bg #2f6feb, text white
-Ghost: bg transparent, border var(--border)
-Padding: 8px 16px
-Radius: 999px
-Hover: opacity 0.9 or lighter shade
-Focus: ring with #2f6feb
+Primario: fondo var(--accent), texto #fff, radio 6px, padding 7px 14px
+Secundario: fondo var(--surface), borde 1px var(--border), texto var(--text)
+Foco: borde var(--accent)
 ```
 
-### Build a Page Layout
-
+### Campo de formulario
 ```
-Background: #ffffff
-Max-width: 1080px, centered
-Grid: 4px base
-Responsive: mobile-first, breakpoints from Section 9
-```
-
-### Build a Stats Card
-
-```
-Surface: #e2e5ea
-Label: #6b7280 (muted, 12px, uppercase)
-Value: var(--text-primary) (primary, 24-32px, bold)
-Status: use success/warning/danger from Section 2
+Fondo: var(--bg)
+Borde: 1px solid var(--border)
+Radio: 6px
+Padding: 7px 10px
+Etiqueta: 0.85rem, var(--text-muted)
 ```
 
-### Build a Form
-
+### Píldora / badge
 ```
-Input bg: #ffffff
-Input border: 1px solid var(--border)
-Focus: border-color #2f6feb
-Label: #6b7280 12px
-Spacing: 16px between fields
-Radius: 999px
+Fondo: var(--accent), texto #fff, radio 999px, padding 2px 10px, 0.75rem, peso 600
 ```
 
-### General Component
+---
 
-```
-1. Read DESIGN.md Sections 2-6 for tokens
-2. Colors: only from palette
-3. Font: Segoe UI, type scale from Section 3
-4. Spacing: 4px grid
-5. Components: match patterns from Section 4
-6. Elevation: flat, surface shifts
-```
+## 8. Sí y no
+
+**Sí**
+- Usar siempre las variables de `:root`; si falta un color, agregarlo ahí primero.
+- Separar con bordes de 1px, no con sombras.
+- Usar `--radius` para contenedores, 6px para campos y 999px solo para badges.
+- Resaltar con `--accent` solo lo importante (fechas recientes, conteos).
+
+**No**
+- No agregar sombras, gradientes ni blur.
+- No usar `--border` como color de fondo.
+- No mezclar familias tipográficas ni inventar tamaños nuevos.
+- No usar radios de píldora en tarjetas o campos.
+- No agregar zebra en tablas.

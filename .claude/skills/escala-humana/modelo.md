@@ -18,7 +18,7 @@ Diagnóstico de madurez en gestión de personas para pymes agropecuarias. Mide, 
 ## Escala de puntaje
 1 Inexistente/Reactivo · 2 Incipiente · 3 Básico/Definido · 4 Avanzado/Estratégico · 5 Optimizado.
 Criterio práctico: cómo funciona esto el 80% del tiempo, en temporada normal. Si dudás entre dos puntajes, el más bajo es más honesto.
-Cortes de nivel (confirmados por Fernando el 2026-10-26, vigentes en el informe web): **Estratégico desde 3,5**. Definido: de 3 a menos de 3,5. Reactivo: menos de 3 [el corte de Reactivo viene de la Guía, no se volvió a confirmar]. La Guía de Dimensiones, que decía "Estratégico más de 4", quedó desactualizada en este punto.
+Cortes de nivel (Estratégico confirmado por Fernando el 2026-10-26; Reactivo y Definido corregidos el 2026-11-05 a pedido de Fernando, según lo que usan los informes web): **Estratégico desde 3,5**. Definido: de 2,5 a menos de 3,5. Reactivo: menos de 2,5. El informe web, el manual y la ficha del Taller Tandil coinciden en el corte de 2,5. Quedaron desactualizados: la Guía de Dimensiones ("Estratégico más de 4"), el Banco de Datos Benchmark (Reactivo menos de 3, Estratégico desde 4) y la ficha del Taller Tandil y la sección 2.8 del manual ("Estratégico más de 3,6").
 Ejemplo real del informe web: 3,17 es Definido; 3,50 y 3,83 son Estratégico.
 
 ## Los 24 ítems (del informe web)

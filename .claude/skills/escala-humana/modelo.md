@@ -27,6 +27,12 @@ Ejemplo real del informe web: 3,17 es Definido; 3,50 y 3,83 son Estratégico.
 - D3 Desarrollo del Equipo: Capacitación, Ambiente, Liderazgo, Competencias, Delegación, Comunicación.
 - D4 Proyección, Incentivos y Cultura: Retención, Incentivos, Reconocimiento, Cultura, Vida-trabajo, Estrategia.
 Nivel por ítem: 1 Inexistente, 2 Incipiente, 3 Básico, 4 Avanzado, 5 Optimizado.
+
+Tipo de ítem (cimiento = condición mínima para que la dimensión funcione; estratégico = práctica avanzada que requiere cimientos firmes). Fuente: diccionario del Banco de Datos; el 4.6 lo confirmó Fernando como estratégico el 2026-11-06.
+- Cimiento (12): 1.1 Rol/RRHH, 1.2 Decisiones, 1.3 Roles claros, 2.2 Incorporación, 2.3 Procesos clave, 2.4 Coordinación, 3.3 Liderazgo, 3.5 Delegación, 3.6 Comunicación, 4.3 Reconocimiento, 4.4 Cultura, 4.5 Vida-trabajo.
+- Estratégico (12): 1.4 Indicadores, 1.5 Evaluación, 1.6 Productividad, 2.1 Atracción, 2.5 Conocimiento, 2.6 Monitoreo, 3.1 Capacitación, 3.2 Ambiente, 3.4 Competencias, 4.1 Retención, 4.2 Incentivos, 4.6 Estrategia.
+- Afirmación del 4.6: "La gestión de personas está conectada a la estrategia del negocio."
+- Señal "Balde agujereado": figura en el Banco de Datos, pero ninguna fuente la define. No usarla hasta que Fernando pase la definición.
 El informe web trae además: señales de incoherencia, cruces entre dimensiones con preguntas orientadoras, comparativa contra el total de empresas medidas y contra el grupo (por ejemplo, n=121 y n=17), próximo paso concreto y hoja de ruta. Los números de comparativa se usan solo si Fernando los pasa.
 
 ## Combinaciones críticas

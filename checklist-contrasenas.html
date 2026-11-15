@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checklist de contraseñas</title>
+<style>
+  @page { size: A4; margin: 14mm; }
+  * { box-sizing: border-box; }
+  body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: #1a1a1a; max-width: 780px; margin: 0 auto; padding: 24px 16px; line-height: 1.4; font-size: 14px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: #555; margin: 0 0 16px; }
+  h2 { font-size: 15px; margin: 16px 0 6px; padding-bottom: 3px; border-bottom: 2px solid #1a1a1a; }
+  h2 span { font-weight: 400; color: #555; font-size: 13px; }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li { padding: 3px 0 3px 26px; position: relative; }
+  li::before { content: ""; position: absolute; left: 0; top: 5px; width: 14px; height: 14px; border: 2px solid #1a1a1a; border-radius: 3px; }
+  .no li::before { content: "✕"; border: none; top: 3px; font-weight: 700; color: #b00020; font-size: 14px; line-height: 1; }
+  .regla { margin-top: 16px; padding: 10px 14px; background: #f1f1f1; border-left: 4px solid #1a1a1a; font-weight: 600; }
+  table { border-collapse: collapse; width: 100%; margin-top: 4px; }
+  td, th { border: 1px solid #999; padding: 4px 8px; text-align: left; font-size: 13px; }
+  th { background: #f1f1f1; }
+  td.c { text-align: center; width: 70px; }
+  @media print { body { padding: 0; font-size: 12.5px; } h2 { margin-top: 12px; } }
+</style>
+</head>
+<body>
+<h1>Mi checklist de contraseñas</h1>
+<p class="sub">Largas + únicas + gestor + verificación en dos pasos.</p>
+
+<h2>1. Mail principal <span>(15 min)</span></h2>
+<ul>
+  <li>Contraseña larga y única, que no uso en ningún otro lado</li>
+  <li>Verificación en dos pasos activada (app autenticadora o passkey)</li>
+  <li>Mail y teléfono de recuperación revisados</li>
+  <li>Códigos de respaldo guardados en lugar seguro</li>
+</ul>
+
+<h2>2. Gestor de contraseñas <span>(20 min)</span></h2>
+<ul>
+  <li>Instalado (Bitwarden, 1Password u otro) en celular y computadora</li>
+  <li>Clave maestra: frase de 5 o 6 palabras al azar</li>
+  <li>Clave maestra anotada en papel y guardada en casa</li>
+</ul>
+
+<h2>3. Cambiar claves críticas <span>(con clave aleatoria de 16+ caracteres)</span></h2>
+<table>
+  <tr><th>Cuenta</th><th class="c">Clave nueva</th><th class="c">2FA</th></tr>
+  <tr><td>Banco y billeteras virtuales</td><td class="c">☐</td><td class="c">☐</td></tr>
+  <tr><td>Mail secundario</td><td class="c">☐</td><td class="c">☐</td></tr>
+  <tr><td>Redes sociales</td><td class="c">☐</td><td class="c">☐</td></tr>
+  <tr><td>Trabajo (Google, Microsoft, plataformas de clientes)</td><td class="c">☐</td><td class="c">☐</td></tr>
+  <tr><td>El resto: lo cambio a medida que lo uso</td><td class="c">☐</td><td class="c">☐</td></tr>
+</table>
+
+<h2>4. Mantenimiento <span>(5 min por mes)</span></h2>
+<ul>
+  <li>Reviso mi mail en haveibeenpwned.com</li>
+  <li>Si un servicio avisa de una filtración, cambio esa clave el mismo día</li>
+  <li>Ante un mensaje de "verificá tu cuenta", no hago clic: entro yo al sitio</li>
+</ul>
+
+<h2>Lo que no hago</h2>
+<ul class="no">
+  <li>Anotar claves en el celular, WhatsApp o un Excel sin proteger</li>
+  <li>Usar fecha de nacimiento, equipo o nombres de familiares</li>
+  <li>Hacer variantes de la misma clave (Clave2025!, Clave2026!)</li>
+  <li>Compartir claves por mail o chat (uso la función de compartir del gestor)</li>
+</ul>
+
+<div class="regla">Una clave maestra fuerte que recuerdo, todo lo demás aleatorio en el gestor, y 2FA en lo importante.</div>
+</body>
+</html>
